@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/continuity-logo.png" alt="Continuity" width="300" />
+<img src="assets/continuity-mark.png" alt="Continuity" width="300" />
 
 # C O N T I N U I T Y
 
