@@ -2,8 +2,6 @@
 
 <img src="assets/continuity-mark.png" alt="Continuity" width="300" />
 
-# C O N T I N U I T Y
-
 ### WORK · PERSIST · EVOLVE
 
 **The persistent layer for AI-powered work.**
