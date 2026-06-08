@@ -6,13 +6,11 @@
 
 **The persistent layer for AI-powered work.**
 
-`○─○─○──────→`
-
 **NO CONTEXT LOST. ONLY MOMENTUM.**
 
 [![CI](https://img.shields.io/github/actions/workflow/status/Noctilucenty/Continuity/ci.yml?style=for-the-badge&label=CI&labelColor=12091F&color=2BB3FF)](https://github.com/Noctilucenty/Continuity/actions/workflows/ci.yml)
-[![local-first](https://img.shields.io/badge/Local_First-✓-6C4DF6?style=for-the-badge&labelColor=12091F)](#-use-it-anywhere)
-[![private](https://img.shields.io/badge/Private_&_Secure-✓-C04CF0?style=for-the-badge&labelColor=12091F)](#-use-it-anywhere)
+[![local-first](https://img.shields.io/badge/Local_First-✓-6C4DF6?style=for-the-badge&labelColor=12091F)](#use-it-anywhere)
+[![private](https://img.shields.io/badge/Private_&_Secure-✓-C04CF0?style=for-the-badge&labelColor=12091F)](#use-it-anywhere)
 [![no LLM](https://img.shields.io/badge/No_LLM_Required-✓-2BB3FF?style=for-the-badge&labelColor=12091F)](#why-its-different)
 
 </div>
@@ -25,8 +23,8 @@ your project intelligence, created a seamless checkpoint, and written a perfect
 handoff — so **any AI or person can resume work instantly.**
 
 ```
-Goal → Plan → Task Queue → Agent Executes → Checkpoint
-     → Review → Memory Update → Next Task → Handoff / Resume → Repeat
+Goal -> Plan -> Task Queue -> Agent Executes -> Checkpoint
+     -> Review -> Memory Update -> Next Task -> Handoff / Resume -> Repeat
 ```
 
 > Continuity does **not** replace Claude, GPT, Cursor, or Gemini. Those are
@@ -35,31 +33,31 @@ Goal → Plan → Task Queue → Agent Executes → Checkpoint
 
 ---
 
-## ⧗ What it represents
+## What it represents
 
 The hourglass isn't decoration — it's the model. Work flows down through a single
 point that loses nothing, then expands again on the other side.
 
 | | |
 |---|---|
-| **▲ &nbsp;Past work** | All your context, decisions, and progress are saved. |
-| **● &nbsp;Continuity** | We preserve and connect everything that matters. |
-| **▼ &nbsp;Future work** | Pick up anywhere. Keep moving forward without losing context. |
+| **Past work** | All your context, decisions, and progress are saved. |
+| **Continuity** | We preserve and connect everything that matters. |
+| **Future work** | Pick up anywhere. Keep moving forward without losing context. |
 
 **Core idea** — Continuity captures your project intelligence, creates seamless
 checkpoints, and lets any AI or person resume work instantly.
 
 ---
 
-## ✦ Features
+## Features
 
 | | | |
 |---|---|---|
-| **▤ Memory** | Everything about your project, organized and easy to recall. | `recall` · `decide` |
-| **○─○─○ Checkpoints** | Automatic snapshots of progress, decisions, and project state. | `checkpoint` |
-| **➜ Handoffs** | Perfect briefings for any AI model or teammate. Continue instantly. | `handoff` · `resume` |
-| **⟳ Sync** *(roadmap)* | Keep your work in sync across devices, teams, and environments. | — |
-| **`</>` Built for developers** | A CLI that fits your workflow, not the other way around. | all commands |
+| **Memory** | Everything about your project, organized and easy to recall. | `recall` · `decide` |
+| **Checkpoints** | Automatic snapshots of progress, decisions, and project state. | `checkpoint` |
+| **Handoffs** | Perfect briefings for any AI model or teammate. Continue instantly. | `handoff` · `resume` |
+| **Sync** *(roadmap)* | Keep your work in sync across devices, teams, and environments. | — |
+| **Built for developers** | A CLI that fits your workflow, not the other way around. | all commands |
 
 > **Honest status:** Memory, Checkpoints, and Handoffs ship today and are
 > local-first. Sync and team features are on the [roadmap](docs/ROADMAP.md), not
@@ -71,45 +69,44 @@ checkpoints, and lets any AI or person resume work instantly.
 
 | | |
 |---|---|
-| 🗂️ **Local-first** | Everything lives in plain files under `.continuity/`. No database, no account, no network. |
-| 📌 **Files-as-truth** | Markdown in `memory/` is the source of record. `knowledge/` is a *derived, rebuildable* index — delete it, run `recall --rebuild`, it's back. |
-| ⚡ **No LLM required** | Planning, review, and search are heuristic and instant. The model adapter is a future seam, not a dependency. Works offline and free. |
-| 🤝 **Handoffs that work cold** | Claude/Cursor get *"read these files."* GPT/Gemini get the state *inlined.* Same facts, framed for each agent. |
+| **Local-first** | Everything lives in plain files under `.continuity/`. No database, no account, no network. |
+| **Files-as-truth** | Markdown in `memory/` is the source of record. `knowledge/` is a *derived, rebuildable* index — delete it, run `recall --rebuild`, it's back. |
+| **No LLM required** | Planning, review, and search are heuristic and instant. The model adapter is a future seam, not a dependency. Works offline and free. |
+| **Handoffs that work cold** | Claude/Cursor get *"read these files."* GPT/Gemini get the state *inlined.* Same facts, framed for each agent. |
 
 ---
 
-## ⚡ Use it anywhere
+## Use it anywhere
 
-|  |  |
+| | |
 |---|---|
-| 💻 **Local first** | Your project, your disk. Nothing leaves the machine. |
-| 🔒 **Private & secure** | Plain files you own. No account, no telemetry. |
-| ☁️ **Sync anywhere** *(roadmap)* | Carry context across devices and environments. |
-| 👥 **Team ready** *(roadmap)* | Shared project memory for multiple humans and agents. |
+| **Local first** | Your project, your disk. Nothing leaves the machine. |
+| **Private & secure** | Plain files you own. No account, no telemetry. |
+| **Sync anywhere** *(roadmap)* | Carry context across devices and environments. |
+| **Team ready** *(roadmap)* | Shared project memory for multiple humans and agents. |
 
 ---
 
-## ◷ See it in action
+## See it in action
 
 ```console
 $ continuity status
 
-  CONTINUITY
-  Project: Scenara
+  Continuity · Scenara
 
-  ⊙ Tasks           24 active
-  ⊙ Checkpoints     18 saved
-  ➜ Next            Build liquidity engine
-  ⟳ Last Sync       2m ago
+  Tasks           24 active
+  Checkpoints     18 saved
+  Next            Build liquidity engine
+  Last sync       2m ago
 
-  NEXT TASK
+  Next task
   Implement liquidity engine core module
 
-  CONTEXT SUMMARY
-  ✓ Architecture decided
-  ✓ Polymarket API integrated
-  ✓ Auth flow completed
-  ✓ 2 known bugs
+  Context summary
+  - Architecture decided
+  - Polymarket API integrated
+  - Auth flow completed
+  - 2 known bugs
 ```
 
 ---
@@ -130,7 +127,7 @@ Prefer not to link? Run any command with `node dist/cli.js <command>`.
 
 ```bash
 cd your-project
-continuity init                       # ▶ Start building with Continuity
+continuity init                       # start building with Continuity
 continuity plan "Build the trader dashboard with live odds"
 continuity next                       # start the highest-leverage task
 
@@ -172,7 +169,7 @@ cleanly into automation and CI.
   tasks/         task_queue.json · completed_tasks.json
   sessions/      session_log.md · checkpoints/
   handoffs/      claude · gpt · cursor · gemini · generic .md
-  knowledge/     entries · entities · relations · index .json   ← the v0.2 store
+  knowledge/     entries · entities · relations · index .json   (the v0.2 store)
   config.json
 CONTINUITY.md
 ```
@@ -193,7 +190,7 @@ $ continuity recall "polymarket liquidity"
 
 $ continuity graph
   Use Polymarket API for odds (decision)
-    └─ chosen over → Kalshi API
+    chosen over -> Kalshi API
 ```
 
 Ask *"why did we choose Polymarket over Kalshi?"* and `recall` answers instantly —
@@ -205,7 +202,7 @@ Built so the local-first core never breaks; every future piece is an additive se
 
 - **Now** — decision journal, recall, knowledge graph, context compression.
 - **Next** — Gemini handoff tuning, self-improving metrics, entity auto-linking.
-- **Then** — model adapters → autonomous `continuity run` loop → multi-agent
+- **Then** — model adapters, an autonomous `continuity run` loop, multi-agent
   orchestration, plus the Sync and Team layers.
 
 Full detail in [`docs/ROADMAP.md`](docs/ROADMAP.md).
