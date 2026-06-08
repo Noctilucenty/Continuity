@@ -10,6 +10,7 @@
 
 **NO CONTEXT LOST. ONLY MOMENTUM.**
 
+[![CI](https://img.shields.io/github/actions/workflow/status/Noctilucenty/Continuity/ci.yml?style=for-the-badge&label=CI&labelColor=12091F&color=2BB3FF)](https://github.com/Noctilucenty/Continuity/actions/workflows/ci.yml)
 [![local-first](https://img.shields.io/badge/Local_First-✓-6C4DF6?style=for-the-badge&labelColor=12091F)](#-use-it-anywhere)
 [![private](https://img.shields.io/badge/Private_&_Secure-✓-C04CF0?style=for-the-badge&labelColor=12091F)](#-use-it-anywhere)
 [![no LLM](https://img.shields.io/badge/No_LLM_Required-✓-2BB3FF?style=for-the-badge&labelColor=12091F)](#why-its-different)

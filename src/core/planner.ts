@@ -26,7 +26,7 @@ export async function generateTasks(p: Paths): Promise<NewTaskInput[]> {
   }
 
   // 2. Explicit next actions are unfinished work.
-  for (const action of extractListItems(memory.nextActions ?? "")) {
+  for (const action of extractListItems(memory.next_actions ?? "")) {
     tasks.push({
       title: truncate(action, 80),
       detail: action,
