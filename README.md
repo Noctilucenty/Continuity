@@ -1,7 +1,6 @@
 <div align="center">
 
 <img src="assets/continuity-mark.png" alt="Continuity" width="300" />
-
 ### WORK · PERSIST · EVOLVE
 
 **The persistent layer for AI-powered work.**
