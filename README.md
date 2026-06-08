@@ -1,24 +1,29 @@
 <div align="center">
 
-<img src="assets/logo.png" alt="Continuity" width="280" />
+<img src="assets/logo.png" alt="Continuity" width="300" />
 
-# Continuity
+# C O N T I N U I T Y
 
-**An AI project runtime. Never lose AI project context again.**
+### WORK · PERSIST · EVOLVE
 
-[![local-first](https://img.shields.io/badge/local--first-✓-6C4DF6)](#whats-on-disk)
-[![no LLM required](https://img.shields.io/badge/LLM-not%20required-2BB3FF)](#why-its-different)
-[![TypeScript](https://img.shields.io/badge/TypeScript-Node-3178C6)](package.json)
-[![license MIT](https://img.shields.io/badge/license-MIT-1E2233)](#license)
+**The persistent layer for AI-powered work.**
+
+`○─○─○──────→`
+
+**NO CONTEXT LOST. ONLY MOMENTUM.**
+
+[![local-first](https://img.shields.io/badge/Local_First-✓-6C4DF6?style=for-the-badge&labelColor=12091F)](#-use-it-anywhere)
+[![private](https://img.shields.io/badge/Private_&_Secure-✓-C04CF0?style=for-the-badge&labelColor=12091F)](#-use-it-anywhere)
+[![no LLM](https://img.shields.io/badge/No_LLM_Required-✓-2BB3FF?style=for-the-badge&labelColor=12091F)](#why-its-different)
 
 </div>
 
 ---
 
 Continuity is the persistent brain **above** your AI tools. When one session
-stops, expires, loses context, or hits a limit, Continuity has already saved the
-state, generated the next task, and written a perfect handoff — so the same AI
-later, or a different one, continues without losing momentum.
+stops, expires, loses context, or hits a limit, Continuity has already captured
+your project intelligence, created a seamless checkpoint, and written a perfect
+handoff — so **any AI or person can resume work instantly.**
 
 ```
 Goal → Plan → Task Queue → Agent Executes → Checkpoint
@@ -29,14 +34,86 @@ Goal → Plan → Task Queue → Agent Executes → Checkpoint
 > temporary workers. Continuity owns the memory, the task graph, the decisions,
 > the checkpoints, and the handoffs.
 
+---
+
+## ⧗ What it represents
+
+The hourglass isn't decoration — it's the model. Work flows down through a single
+point that loses nothing, then expands again on the other side.
+
+| | |
+|---|---|
+| **▲ &nbsp;Past work** | All your context, decisions, and progress are saved. |
+| **● &nbsp;Continuity** | We preserve and connect everything that matters. |
+| **▼ &nbsp;Future work** | Pick up anywhere. Keep moving forward without losing context. |
+
+**Core idea** — Continuity captures your project intelligence, creates seamless
+checkpoints, and lets any AI or person resume work instantly.
+
+---
+
+## ✦ Features
+
+| | | |
+|---|---|---|
+| **▤ Memory** | Everything about your project, organized and easy to recall. | `recall` · `decide` |
+| **○─○─○ Checkpoints** | Automatic snapshots of progress, decisions, and project state. | `checkpoint` |
+| **➜ Handoffs** | Perfect briefings for any AI model or teammate. Continue instantly. | `handoff` · `resume` |
+| **⟳ Sync** *(roadmap)* | Keep your work in sync across devices, teams, and environments. | — |
+| **`</>` Built for developers** | A CLI that fits your workflow, not the other way around. | all commands |
+
+> **Honest status:** Memory, Checkpoints, and Handoffs ship today and are
+> local-first. Sync and team features are on the [roadmap](docs/ROADMAP.md), not
+> yet built — Continuity is currently a single-machine CLI.
+
+---
+
 ## Why it's different
 
 | | |
 |---|---|
-| 🗂️ **Local-first** | Everything lives in plain files under `.continuity/`. No database, no account, no network. Your project, your disk. |
-| 📌 **Files-as-truth** | The markdown in `memory/` is the source of record. The `knowledge/` store is a *derived, rebuildable* index — delete it, run `recall --rebuild`, it's back. You never lose real data. |
-| ⚡ **No LLM required** | Planning, review, and search are heuristic and instant. The model adapter is a future seam, not a dependency — Continuity works offline and free. |
+| 🗂️ **Local-first** | Everything lives in plain files under `.continuity/`. No database, no account, no network. |
+| 📌 **Files-as-truth** | Markdown in `memory/` is the source of record. `knowledge/` is a *derived, rebuildable* index — delete it, run `recall --rebuild`, it's back. |
+| ⚡ **No LLM required** | Planning, review, and search are heuristic and instant. The model adapter is a future seam, not a dependency. Works offline and free. |
 | 🤝 **Handoffs that work cold** | Claude/Cursor get *"read these files."* GPT/Gemini get the state *inlined.* Same facts, framed for each agent. |
+
+---
+
+## ⚡ Use it anywhere
+
+|  |  |
+|---|---|
+| 💻 **Local first** | Your project, your disk. Nothing leaves the machine. |
+| 🔒 **Private & secure** | Plain files you own. No account, no telemetry. |
+| ☁️ **Sync anywhere** *(roadmap)* | Carry context across devices and environments. |
+| 👥 **Team ready** *(roadmap)* | Shared project memory for multiple humans and agents. |
+
+---
+
+## ◷ See it in action
+
+```console
+$ continuity status
+
+  CONTINUITY
+  Project: Scenara
+
+  ⊙ Tasks           24 active
+  ⊙ Checkpoints     18 saved
+  ➜ Next            Build liquidity engine
+  ⟳ Last Sync       2m ago
+
+  NEXT TASK
+  Implement liquidity engine core module
+
+  CONTEXT SUMMARY
+  ✓ Architecture decided
+  ✓ Polymarket API integrated
+  ✓ Auth flow completed
+  ✓ 2 known bugs
+```
+
+---
 
 ## Install
 
@@ -54,7 +131,7 @@ Prefer not to link? Run any command with `node dist/cli.js <command>`.
 
 ```bash
 cd your-project
-continuity init
+continuity init                       # ▶ Start building with Continuity
 continuity plan "Build the trader dashboard with live odds"
 continuity next                       # start the highest-leverage task
 
@@ -85,8 +162,8 @@ continuity resume --raw | pbcopy      # the exact prompt to restart, copied
 | `continuity handoff --to <agent>` | Briefing for `claude` · `gpt` · `cursor` · `gemini` · `generic` |
 | `continuity resume` | Print the best prompt to restart work now (`--raw` to pipe) |
 
-Every command that prompts interactively is also fully scriptable via flags, so
-Continuity drops cleanly into automation and CI.
+Every interactive command is also fully scriptable via flags, so Continuity drops
+cleanly into automation and CI.
 
 ## What's on disk
 
@@ -107,7 +184,7 @@ CONTINUITY.md
 markdown. Decisions, bugs, lessons, and assumptions become queryable entries with
 a keyword index; explicit relations (`chose_over`, `depends_on`, …) form a graph.
 
-```bash
+```console
 $ continuity decide --title "Use Polymarket API for odds" \
     --reason "Deeper liquidity and free real-time data" --over "Kalshi API"
 
@@ -130,10 +207,20 @@ Built so the local-first core never breaks; every future piece is an additive se
 - **Now** — decision journal, recall, knowledge graph, context compression.
 - **Next** — Gemini handoff tuning, self-improving metrics, entity auto-linking.
 - **Then** — model adapters → autonomous `continuity run` loop → multi-agent
-  orchestration (Planner / Builder / Reviewer / Research / Memory).
+  orchestration, plus the Sync and Team layers.
 
 Full detail in [`docs/ROADMAP.md`](docs/ROADMAP.md).
 
-## License
+---
 
-MIT
+<div align="center">
+
+### CONTINUITY IS YOUR PROJECT MEMORY LAYER
+
+**Save context. Generate clarity. Continue without limits.**
+
+`>> continuity init` — start building.
+
+<sub>MIT licensed · Local-first · Never lose AI project context again.</sub>
+
+</div>
