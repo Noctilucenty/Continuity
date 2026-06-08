@@ -1,0 +1,39 @@
+{
+  "name": "continuity",
+  "version": "0.2.0",
+  "description": "An AI project runtime that keeps work moving across Claude, GPT, Cursor, Gemini, and future agents. Never lose AI project context again.",
+  "bin": {
+    "continuity": "dist/cli.js"
+  },
+  "main": "dist/cli.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/cli.js",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "ai",
+    "cli",
+    "context",
+    "handoff",
+    "memory",
+    "agents",
+    "claude",
+    "gpt",
+    "cursor",
+    "gemini"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "commander": "^12.1.0",
+    "picocolors": "^1.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2"
+  }
+}
