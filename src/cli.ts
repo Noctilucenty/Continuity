@@ -16,6 +16,10 @@ import { resume } from "./commands/resume";
 import { recall } from "./commands/recall";
 import { decide } from "./commands/decide";
 import { graph } from "./commands/graph";
+import { pack } from "./commands/pack";
+import { analyze } from "./commands/analyze";
+import { decisions } from "./commands/decisions";
+import { ask } from "./commands/ask";
 
 /** Collect repeatable options (e.g. --changed a --changed b) into an array. */
 function collect(value: string, previous: string[]): string[] {
@@ -27,7 +31,7 @@ const program = new Command();
 program
   .name("continuity")
   .description("An AI project runtime. Never lose AI project context again.")
-  .version("0.2.0");
+  .version("0.3.0");
 
 program
   .command("init")
@@ -65,6 +69,8 @@ program
   .option("--decision <text>", "A decision to record (repeatable)", collect, [])
   .option("--lesson <text>", "A lesson learned (repeatable)", collect, [])
   .option("--bug <text>", "A bug discovered (repeatable)", collect, [])
+  .option("--from-git", "Derive the checkpoint from the git working tree")
+  .option("--since <ref>", "Derive the checkpoint from the git diff since <ref>")
   .action(checkpoint);
 
 program
@@ -103,17 +109,45 @@ program
   .description("Record a decision in the journal")
   .option("--title <text>", "What was decided")
   .option("--reason <text>", "Why")
+  .option("--context <text>", "Context around the decision")
   .option("--alternative <text>", "An alternative considered (repeatable)", collect, [])
   .option("--tradeoffs <text>", "Tradeoffs accepted")
   .option("--tag <tag>", "A tag (repeatable)", collect, [])
+  .option("--file <path>", "A related file (repeatable)", collect, [])
   .option("--over <alternative>", "Record 'this over <alternative>' in the graph")
+  .option("--supersedes <id>", "Mark a prior decision (by id) as superseded by this one")
   .action(decide);
+
+program
+  .command("decisions")
+  .description("Browse the decision journal")
+  .option("--tag <tag>", "Only decisions with this tag")
+  .option("--active", "Hide superseded/inactive decisions")
+  .option("--search <query>", "Rank decisions by relevance to a query")
+  .action(decisions);
+
+program
+  .command("ask [question]")
+  .description("Answer a question from stored project memory (local, deterministic)")
+  .action((question) => ask(question));
 
 program
   .command("graph")
   .description("Show the knowledge graph")
   .option("--json", "Emit the raw graph as JSON")
   .action(graph);
+
+program
+  .command("pack [topic]")
+  .description("Generate a focused context bundle for one area of the project")
+  .option("--save", "Also save the pack to .continuity/packs/<topic>.md")
+  .action((topic, opts) => pack(topic, opts));
+
+program
+  .command("analyze")
+  .description("Inspect the repository and report local project intelligence")
+  .option("--json", "Emit the raw analysis as JSON")
+  .action(analyze);
 
 async function main() {
   try {

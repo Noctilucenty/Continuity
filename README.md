@@ -149,13 +149,17 @@ continuity resume --raw | pbcopy      # the exact prompt to restart, copied
 | `continuity status` | Dashboard: tasks, knowledge, last checkpoint |
 | `continuity plan [goal]` | Turn your goal + memory into a scored task list |
 | `continuity next` | Start the single highest-leverage task |
-| `continuity checkpoint` | Save what changed; capture knowledge; refresh handoffs |
+| `continuity checkpoint` | Save what changed; capture knowledge; refresh handoffs. `--from-git` / `--since <ref>` derive it from git |
 | `continuity summarize` | Compact digest of the whole project |
 | `continuity review` | Audit risk / tests / docs / next best move (`--apply` to enqueue) |
-| `continuity decide` | Record a decision in the journal (`--over` adds a graph edge) |
+| `continuity decide` | Record a decision (`--context`, `--file`, `--tag`, `--over`, `--supersedes`) |
+| `continuity decisions` | Browse the decision journal (`--tag`, `--active`, `--search`) |
 | `continuity recall "<query>"` | Search memory and decisions (`--rebuild` to reindex) |
+| `continuity ask "<question>"` | Answer a question from stored memory (local, deterministic) |
 | `continuity graph` | Render the knowledge graph (`--json` for tooling) |
-| `continuity handoff --to <agent>` | Briefing for `claude` · `gpt` · `cursor` · `gemini` · `generic` |
+| `continuity pack <topic>` | Generate a focused context bundle for one area (`--save`) |
+| `continuity analyze` | Inspect the repository for local project intelligence (`--json`) |
+| `continuity handoff --to <agent>` | Model-specific briefing for `claude` · `gpt` · `cursor` · `gemini` · `generic` |
 | `continuity resume` | Print the best prompt to restart work now (`--raw` to pipe) |
 
 Every interactive command is also fully scriptable via flags, so Continuity drops
@@ -196,14 +200,38 @@ $ continuity graph
 Ask *"why did we choose Polymarket over Kalshi?"* and `recall` answers instantly —
 offline, from your own recorded history.
 
+## Intelligence layer (v0.3)
+
+The daily pain this targets: not re-explaining your project to every AI.
+
+- **Model-specific handoffs** — `handoff --to claude|gpt|cursor|gemini` reframe
+  the same facts for each tool (concise + files for Claude/Cursor, reasoning +
+  risks for GPT, long-form context for Gemini). See
+  [docs/model-adapters.md](docs/model-adapters.md).
+- **Context packs** — `pack <topic>` bundles just the decisions, memories,
+  tasks, checkpoints, and files that touch one area, with a paste-ready prompt.
+  See [docs/context-packs.md](docs/context-packs.md).
+- **Repository intelligence** — `analyze` audits the repo for untested files,
+  TODO/FIXME markers, large files, docs gaps, and CI, then recommends actions.
+  See [docs/repository-intelligence.md](docs/repository-intelligence.md).
+- **Ask** — `ask "<question>"` answers from stored memory only, cites its
+  sources, and reports a confidence level. No external LLM; it never guesses.
+- **Git checkpoints** — `checkpoint --from-git` / `--since <ref>` summarize your
+  working-tree or diff changes into a checkpoint (read-only; never commits).
+- **Sync-ready data** — records carry stable ids, a schema version, and a content
+  hash so a future sync can merge safely. See
+  [docs/sync-ready-data.md](docs/sync-ready-data.md).
+
 ## Roadmap
 
 Built so the local-first core never breaks; every future piece is an additive seam.
 
-- **Now** — decision journal, recall, knowledge graph, context compression.
-- **Next** — Gemini handoff tuning, self-improving metrics, entity auto-linking.
-- **Then** — model adapters, an autonomous `continuity run` loop, multi-agent
-  orchestration, plus the Sync and Team layers.
+- **Now** — model-specific handoffs, context packs, repository intelligence,
+  decision retrieval, local ask, git checkpoints, sync-ready data.
+- **Next** — self-improving metrics, entity auto-linking, embeddings-backed
+  recall/ask (behind the same local-first fallback).
+- **Then** — a model-adapter execution layer, an autonomous `continuity run`
+  loop, multi-agent orchestration, plus the Sync and Team layers.
 
 Full detail in [`docs/ROADMAP.md`](docs/ROADMAP.md).
 

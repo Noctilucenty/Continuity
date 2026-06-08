@@ -63,6 +63,9 @@ export interface ProjectConfig {
   version: string;
   createdAt: string;
   goal?: string;
+  /** Sync-ready metadata (v2B #7). Optional so old configs still load. */
+  projectId?: string;
+  schemaVersion?: number;
 }
 
 /* ---------- 2A: knowledge store ---------- */
@@ -87,9 +90,18 @@ export interface KnowledgeEntry {
   reason?: string;
   alternatives?: string[];
   tradeoffs?: string;
+  /** Richer decision fields (v2B #5). All optional + migration-tolerant. */
+  context?: string;
+  relatedFiles?: string[];
+  /** id of the decision that supersedes this one, if any. */
+  supersededBy?: string;
   sourceFile?: string;
   createdAt: string;
   updatedAt: string;
+  /** Sync-ready metadata (v2B #7). Optional so old data still reads. */
+  schemaVersion?: number;
+  source?: string;
+  contentHash?: string;
 }
 
 export interface Entity {

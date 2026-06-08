@@ -1,14 +1,15 @@
 import { requireProject, UserError } from "./_shared";
 import { generateHandoff } from "../core/handoffs";
+import { normalizeTarget, getAdapter } from "../adapters/modelAdapters";
 import { loadQueue, nextActionable } from "../core/tasks";
-import { AGENT_TARGETS, AgentTarget } from "../types";
+import { AGENT_TARGETS } from "../types";
 import { logger } from "../utils/logger";
 import { relativePath } from "../utils/format";
 
 /**
- * Write a paste-ready briefing for a specific agent. The preview names the same
- * next task as `next`/`resume` (via `nextActionable`) so a handoff never points
- * somewhere different from the rest of the tool.
+ * Write a paste-ready briefing for a specific agent. The target is normalized
+ * (aliases like "chatgpt"/"claude-code" are accepted); an unrecognized target
+ * fails with a clear error rather than silently producing a generic doc.
  */
 export async function handoff(
   to: string | undefined,
@@ -16,10 +17,11 @@ export async function handoff(
 ): Promise<void> {
   const p = await requireProject();
 
-  const target = (to ?? "generic").toLowerCase() as AgentTarget;
-  if (!AGENT_TARGETS.includes(target)) {
+  const target = normalizeTarget(to);
+  if (!target) {
     throw new UserError(
-      `Unknown agent "${to}". Choose one of: ${AGENT_TARGETS.join(", ")}.`
+      `Unknown agent "${to}". Choose one of: ${AGENT_TARGETS.join(", ")} ` +
+        `(aliases like chatgpt, openai, claude-code, google also work).`
     );
   }
 
@@ -34,10 +36,11 @@ export async function handoff(
   const next = nextActionable(queue);
 
   logger.success(`Handoff written for ${target}.`);
+  logger.dim(`  optimized for: ${getAdapter(target).optimizesFor}`);
   if (next) {
     logger.line("");
-    logger.line(`Handing off this task:`);
-    logger.line(`  → ${next.title}`);
+    logger.line("Handing off this task:");
+    logger.line(`  -> ${next.title}`);
   }
   logger.line("");
   logger.info(`Saved to ${relativePath(p.handoffs[target])}`);

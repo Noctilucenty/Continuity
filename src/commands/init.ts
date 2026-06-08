@@ -7,6 +7,7 @@ import { ensureDir, writeJson, writeText, pathExists } from "../utils/fs";
 import { ask } from "../utils/prompt";
 import { logger } from "../utils/logger";
 import { now, relativePath } from "../utils/format";
+import { newProjectId, SCHEMA_VERSION } from "../store/metadata";
 
 /**
  * Scaffold a complete `.continuity/` workspace. Idempotent-ish: refuses to
@@ -66,8 +67,10 @@ export async function init(opts: { force?: boolean; name?: string }): Promise<vo
   // Config + root doc.
   const config: ProjectConfig = {
     name,
-    version: "0.2.0",
+    version: "0.3.0",
     createdAt: now(),
+    projectId: newProjectId(),
+    schemaVersion: SCHEMA_VERSION,
   };
   await writeJson(p.config, config);
   await writeText(p.rootDoc, rootDoc(name));

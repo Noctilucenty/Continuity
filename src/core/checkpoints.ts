@@ -35,6 +35,27 @@ export async function readLatestCheckpoint(p: Paths): Promise<Checkpoint | null>
   return parseCheckpoint(p, last);
 }
 
+export interface CheckpointSummary {
+  id: string;
+  createdAt: string;
+  summary: string;
+}
+
+/**
+ * Lightweight list of all checkpoints, parsed from the session log without
+ * reading each checkpoint file. Newest last (log append order). Used by
+ * context packs and `ask` to find relevant checkpoints cheaply.
+ */
+export async function listCheckpoints(p: Paths): Promise<CheckpointSummary[]> {
+  const log = await readText(p.sessions.log, "");
+  const out: CheckpointSummary[] = [];
+  for (const line of log.split("\n")) {
+    const m = line.match(/^- \[(.+?)\]\s*(.*?)\s*\((cp_[a-z0-9]+)\)\s*$/);
+    if (m) out.push({ createdAt: m[1], summary: m[2], id: m[3] });
+  }
+  return out;
+}
+
 async function parseCheckpoint(p: Paths, id: string): Promise<Checkpoint | null> {
   const file = path.join(p.sessions.checkpoints, `${id}.md`);
   const md = await readText(file, "");

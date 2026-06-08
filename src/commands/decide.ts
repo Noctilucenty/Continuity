@@ -1,5 +1,5 @@
 import { requireProject } from "./_shared";
-import { addEntry, addRelation, ensureEntity } from "../core/knowledge";
+import { addEntry, addRelation, ensureEntity, updateEntry } from "../core/knowledge";
 import { appendSection } from "../core/memory";
 import { ask, askMultiline } from "../utils/prompt";
 import { logger } from "../utils/logger";
@@ -8,17 +8,23 @@ import { truncate } from "../utils/format";
 interface DecideOpts {
   title?: string;
   reason?: string;
+  context?: string;
   alternative?: string[];
   tradeoffs?: string;
   tag?: string[];
+  file?: string[];
   /** "A over B" records a chose_over relation between two entities. */
   over?: string;
+  /** Mark an existing decision (by id) as superseded by this new one. */
+  supersedes?: string;
 }
 
 /**
- * Record a decision in the journal (2A #6). Writes a typed entry to the
- * knowledge store AND appends a human-readable block to memory/decisions.md, so
- * "why did we do X?" is answerable by both `recall` and a human reading the file.
+ * Record a decision in the journal (v2B #5). Writes a typed entry to the
+ * knowledge store AND mirrors a human-readable block into memory/decisions.md,
+ * so "why did we do X?" is answerable by both `recall`/`decisions` and a human
+ * reading the file. Supports richer fields: context, related files, tags, and
+ * superseding a prior decision.
  */
 export async function decide(opts: DecideOpts): Promise<void> {
   const p = await requireProject();
@@ -30,17 +36,21 @@ export async function decide(opts: DecideOpts): Promise<void> {
   }
 
   const reason = opts.reason ?? (await ask("Reason (why?)", ""));
+  const context = opts.context ?? (await ask("Context (optional)", ""));
   const alternatives = opts.alternative ?? (await askMultiline("Alternatives considered"));
   const tradeoffs = opts.tradeoffs ?? (await ask("Tradeoffs", ""));
   const tags = opts.tag ?? [];
+  const relatedFiles = opts.file ?? [];
 
   const { entry } = await addEntry(p, {
     type: "decision",
     title: title.trim(),
     body: reason.trim(),
     reason: reason.trim() || undefined,
+    context: context.trim() || undefined,
     alternatives,
     tradeoffs: tradeoffs.trim() || undefined,
+    relatedFiles,
     tags,
     sourceFile: p.memory.decisions,
   });
@@ -49,10 +59,25 @@ export async function decide(opts: DecideOpts): Promise<void> {
   const block = [
     `Decision: ${title.trim()}`,
     ...(reason ? [`Reason: ${reason.trim()}`] : []),
+    ...(context ? [`Context: ${context.trim()}`] : []),
     ...(alternatives.length ? [`Alternatives: ${alternatives.join("; ")}`] : []),
     ...(tradeoffs ? [`Tradeoffs: ${tradeoffs.trim()}`] : []),
+    ...(relatedFiles.length ? [`Files: ${relatedFiles.join(", ")}`] : []),
   ];
   await appendSection(p.memory.decisions, title.trim(), block);
+
+  // Optionally supersede a prior decision.
+  if (opts.supersedes) {
+    const updated = await updateEntry(p, opts.supersedes, {
+      status: "superseded",
+      supersededBy: entry.id,
+    });
+    if (updated) {
+      logger.dim(`  superseded prior decision ${opts.supersedes}`);
+    } else {
+      logger.warn(`  no decision found with id ${opts.supersedes} to supersede`);
+    }
+  }
 
   // Optional "chose X over Y" relation for the graph.
   if (opts.over) {
@@ -71,7 +96,7 @@ export async function decide(opts: DecideOpts): Promise<void> {
   if (reason) logger.dim(`  reason: ${truncate(reason.trim(), 90)}`);
   logger.line("");
   logger.info(`Searchable now: continuity recall "${firstWord(title)}"`);
-  logger.dim(`Entry ${entry.id} · mirrored to ${"memory/decisions.md"}`);
+  logger.dim(`Entry ${entry.id} · see all with: continuity decisions`);
 }
 
 function firstWord(s: string): string {

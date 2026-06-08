@@ -9,6 +9,7 @@ import {
 import { extractListItems } from "./memory";
 import { readJson, writeJson, readText } from "../utils/fs";
 import { now, shortId } from "../utils/format";
+import { syncMeta, RecordSource } from "../store/metadata";
 
 /**
  * The 2A knowledge store: a typed, queryable layer beside the markdown memory.
@@ -71,13 +72,19 @@ export interface NewEntryInput {
   reason?: string;
   alternatives?: string[];
   tradeoffs?: string;
+  context?: string;
+  relatedFiles?: string[];
+  supersededBy?: string;
   sourceFile?: string;
+  /** Sync-ready origin label (v2B #7). Defaults to "cli". */
+  source?: RecordSource;
 }
 
 export function makeEntry(input: NewEntryInput): KnowledgeEntry {
   const ts = now();
-  return {
-    id: shortId("k"),
+  const alternatives = input.alternatives?.map((a) => a.trim()).filter(Boolean);
+  const relatedFiles = input.relatedFiles?.map((f) => f.trim()).filter(Boolean);
+  const stable = {
     type: input.type,
     title: input.title.trim(),
     body: (input.body ?? "").trim(),
@@ -85,11 +92,19 @@ export function makeEntry(input: NewEntryInput): KnowledgeEntry {
     tags: dedupeLower(input.tags ?? []),
     entities: dedupeLower(input.entities ?? []),
     reason: input.reason?.trim() || undefined,
-    alternatives: input.alternatives?.filter((a) => a.trim()) || undefined,
+    alternatives: alternatives && alternatives.length ? alternatives : undefined,
     tradeoffs: input.tradeoffs?.trim() || undefined,
+    context: input.context?.trim() || undefined,
+    relatedFiles: relatedFiles && relatedFiles.length ? relatedFiles : undefined,
+    supersededBy: input.supersededBy || undefined,
+  };
+  return {
+    id: shortId("k"),
+    ...stable,
     sourceFile: input.sourceFile,
     createdAt: ts,
     updatedAt: ts,
+    ...syncMeta(stable, input.source ?? "cli"),
   };
 }
 
@@ -119,6 +134,20 @@ export async function addEntry(
   await saveIndex(p, index);
 
   return { entry, added: true };
+}
+
+/** Patch an existing entry by id (e.g. to mark a decision superseded). */
+export async function updateEntry(
+  p: Paths,
+  id: string,
+  patch: Partial<KnowledgeEntry>
+): Promise<KnowledgeEntry | null> {
+  const entries = await loadEntries(p);
+  const idx = entries.findIndex((e) => e.id === id);
+  if (idx === -1) return null;
+  entries[idx] = { ...entries[idx], ...patch, id, updatedAt: now() };
+  await saveEntries(p, entries);
+  return entries[idx];
 }
 
 /* ---------- search ---------- */
@@ -157,10 +186,9 @@ export async function search(p: Paths, query: string): Promise<SearchHit[]> {
   }
 
   // Substring fallback against the raw text, for anything the index missed.
-  const haystackTerms = terms;
   for (const entry of entries) {
-    const hay = `${entry.title} ${entry.body} ${entry.tags.join(" ")}`.toLowerCase();
-    for (const term of haystackTerms) {
+    const hay = entryText(entry).toLowerCase();
+    for (const term of terms) {
       if (hay.includes(term)) scores.set(entry.id, (scores.get(entry.id) ?? 0) + 1);
     }
   }
@@ -250,10 +278,22 @@ function tokenize(text: string): string[] {
     .filter((t) => t.length >= 2 && !STOPWORDS.has(t));
 }
 
+/** All searchable text for an entry, including the richer decision fields. */
+export function entryText(entry: KnowledgeEntry): string {
+  return [
+    entry.title,
+    entry.body,
+    entry.reason ?? "",
+    entry.context ?? "",
+    (entry.alternatives ?? []).join(" "),
+    entry.tradeoffs ?? "",
+    entry.tags.join(" "),
+    entry.entities.join(" "),
+  ].join(" ");
+}
+
 function indexEntry(index: KeywordIndex, entry: KnowledgeEntry): void {
-  const tokens = new Set(
-    tokenize(`${entry.title} ${entry.body} ${entry.tags.join(" ")} ${entry.entities.join(" ")}`)
-  );
+  const tokens = new Set(tokenize(entryText(entry)));
   for (const token of tokens) {
     const bucket = index[token] ?? (index[token] = []);
     if (!bucket.includes(entry.id)) bucket.push(entry.id);
