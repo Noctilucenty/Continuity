@@ -36,7 +36,7 @@ const program = new Command();
 program
   .name("continuity")
   .description("An AI project runtime. Never lose AI project context again.")
-  .version("0.6.0");
+  .version("0.7.0");
 
 // Grouped, scannable help: hide the flat auto-list and print our own groups so
 // the everyday commands are visibly prioritized.

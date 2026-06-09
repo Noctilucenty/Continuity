@@ -1,11 +1,42 @@
 {
   "name": "continuity",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "An AI project runtime that keeps work moving across Claude, GPT, Cursor, Gemini, and future agents. Never lose AI project context again.",
+  "keywords": [
+    "ai",
+    "memory",
+    "context",
+    "cli",
+    "agent",
+    "agents",
+    "handoff",
+    "project-memory",
+    "developer-tools",
+    "productivity"
+  ],
+  "homepage": "https://github.com/Noctilucenty/Continuity#readme",
+  "bugs": {
+    "url": "https://github.com/Noctilucenty/Continuity/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Noctilucenty/Continuity.git"
+  },
+  "license": "MIT",
+  "author": "Noctilucenty",
   "bin": {
-    "continuity": "dist/cli.js"
+    "continuity": "./dist/cli.js"
   },
   "main": "dist/cli.js",
+  "files": [
+    "dist",
+    "docs",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
@@ -13,23 +44,11 @@
     "clean": "rm -rf dist",
     "test": "vitest run",
     "test:watch": "vitest",
-    "typecheck": "tsc --noEmit"
-  },
-  "keywords": [
-    "ai",
-    "cli",
-    "context",
-    "handoff",
-    "memory",
-    "agents",
-    "claude",
-    "gpt",
-    "cursor",
-    "gemini"
-  ],
-  "license": "MIT",
-  "engines": {
-    "node": ">=20"
+    "typecheck": "tsc --noEmit",
+    "pack:check": "npm pack --dry-run",
+    "verify:install": "bash scripts/verify-install.sh",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run typecheck && npm run build && npm test"
   },
   "dependencies": {
     "commander": "^12.1.0",

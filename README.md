@@ -113,6 +113,23 @@ $ continuity status
 
 ## Install
 
+Requires Node 20 or newer.
+
+Global install (use the `continuity` command anywhere):
+
+```bash
+npm install -g continuity
+continuity
+```
+
+One-time use, no install:
+
+```bash
+npx continuity
+```
+
+From source (development):
+
 ```bash
 git clone https://github.com/Noctilucenty/Continuity.git
 cd Continuity
@@ -121,7 +138,9 @@ npm run build
 npm link            # makes `continuity` available globally
 ```
 
-Prefer not to link? Run any command with `node dist/cli.js <command>`.
+> Note: the npm package is being finalized for publish. Until then, use the
+> from-source install above. See [docs/installation.md](docs/installation.md) for
+> updating, uninstalling, and platform notes (including clipboard tools).
 
 ## Quick start
 
