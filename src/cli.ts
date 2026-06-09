@@ -20,6 +20,8 @@ import { pack } from "./commands/pack";
 import { analyze } from "./commands/analyze";
 import { decisions } from "./commands/decisions";
 import { ask } from "./commands/ask";
+import { done } from "./commands/done";
+import { metrics } from "./commands/metrics";
 
 /** Collect repeatable options (e.g. --changed a --changed b) into an array. */
 function collect(value: string, previous: string[]): string[] {
@@ -31,7 +33,7 @@ const program = new Command();
 program
   .name("continuity")
   .description("An AI project runtime. Never lose AI project context again.")
-  .version("0.3.0");
+  .version("0.4.0");
 
 program
   .command("init")
@@ -55,6 +57,11 @@ program
   .description("Start the single highest-leverage task")
   .option("--peek", "Show the next task without starting it")
   .action(next);
+
+program
+  .command("done [taskId]")
+  .description("Mark a task complete (defaults to the current next task)")
+  .action((taskId) => done(taskId));
 
 program
   .command("checkpoint")
@@ -130,6 +137,12 @@ program
   .command("ask [question]")
   .description("Answer a question from stored project memory (local, deterministic)")
   .action((question) => ask(question));
+
+program
+  .command("metrics")
+  .description("Show usage signal and task-completion velocity")
+  .option("--json", "Emit the raw metrics as JSON")
+  .action(metrics);
 
 program
   .command("graph")

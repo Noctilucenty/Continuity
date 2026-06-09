@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, afterEach } from "vitest";
 import {
   scoreTask,
   makeTask,
@@ -7,9 +7,14 @@ import {
   nextActionable,
   findTask,
   updateStatus,
+  completeTask,
+  saveQueue,
+  loadQueue,
+  loadCompleted,
   SOURCE_WEIGHTS,
 } from "../src/core/tasks";
 import { Task } from "../src/types";
+import { tmpProject } from "./helpers";
 
 function task(partial: Partial<Task>): Task {
   const base = makeTask({ title: partial.title ?? "t", source: partial.source ?? "manual" });
@@ -110,5 +115,49 @@ describe("updateStatus", () => {
     expect(updated.status).toBe("in_progress");
     expect(updated.priority).toBe(scoreTask({ source: "docs", status: "in_progress" }));
     expect(updated.updatedAt >= t.createdAt).toBe(true);
+  });
+});
+
+describe("completeTask", () => {
+  let cleanups: Array<() => Promise<void>> = [];
+  afterEach(async () => {
+    await Promise.all(cleanups.map((c) => c()));
+    cleanups = [];
+  });
+
+  it("moves the next task from queue to completed and reports the new next", async () => {
+    const { p, cleanup } = await tmpProject();
+    cleanups.push(cleanup);
+    await saveQueue(p, [
+      makeTask({ title: "fix bug", source: "bug" }), // highest priority
+      makeTask({ title: "write docs", source: "docs" }),
+    ]);
+
+    const result = await completeTask(p);
+    expect(result?.completed.title).toBe("fix bug");
+    expect(result?.completed.status).toBe("done");
+    expect(result?.next?.title).toBe("write docs");
+
+    expect((await loadQueue(p)).map((t) => t.title)).toEqual(["write docs"]);
+    expect((await loadCompleted(p)).map((t) => t.title)).toEqual(["fix bug"]);
+  });
+
+  it("completes a specific task by id prefix", async () => {
+    const { p, cleanup } = await tmpProject();
+    cleanups.push(cleanup);
+    const docs = makeTask({ title: "write docs", source: "docs" });
+    await saveQueue(p, [makeTask({ title: "fix bug", source: "bug" }), docs]);
+
+    const result = await completeTask(p, docs.id);
+    expect(result?.completed.title).toBe("write docs");
+    expect((await loadQueue(p)).map((t) => t.title)).toEqual(["fix bug"]);
+  });
+
+  it("returns null when there is nothing to complete", async () => {
+    const { p, cleanup } = await tmpProject();
+    cleanups.push(cleanup);
+    await saveQueue(p, []);
+    expect(await completeTask(p)).toBeNull();
+    expect(await completeTask(p, "nope")).toBeNull();
   });
 });

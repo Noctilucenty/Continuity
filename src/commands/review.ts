@@ -3,6 +3,7 @@ import { requireProject } from "./_shared";
 import { review as runReview } from "../core/reviewer";
 import { generateTasks } from "../core/planner";
 import { loadQueue, saveQueue, mergeTasks } from "../core/tasks";
+import { loadMetrics, velocity } from "../store/metrics";
 import { logger } from "../utils/logger";
 import { pluralize } from "../utils/format";
 
@@ -25,6 +26,14 @@ export async function review(opts: { apply?: boolean }): Promise<void> {
   section("What is risky", r.risky);
   section("What should be tested", r.shouldTest);
   section("What should be documented", r.shouldDocument);
+
+  const v = velocity(await loadMetrics(p));
+  section("Momentum", [
+    `${v.total} task(s) completed overall; ${v.last7Days} in the last 7 days (~${v.perDay7}/day).`,
+    v.last7Days === 0
+      ? "No completions this week — close a task with `continuity done` to keep momentum."
+      : "Completion velocity is positive — keep checkpointing.",
+  ]);
 
   logger.heading("Highest-leverage next move");
   logger.line(`  ${pc.green("→")} ${r.highestLeverage}`);

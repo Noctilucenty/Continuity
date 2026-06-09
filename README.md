@@ -149,6 +149,7 @@ continuity resume --raw | pbcopy      # the exact prompt to restart, copied
 | `continuity status` | Dashboard: tasks, knowledge, last checkpoint |
 | `continuity plan [goal]` | Turn your goal + memory into a scored task list |
 | `continuity next` | Start the single highest-leverage task |
+| `continuity done [taskId]` | Mark a task complete (defaults to the current one) |
 | `continuity checkpoint` | Save what changed; capture knowledge; refresh handoffs. `--from-git` / `--since <ref>` derive it from git |
 | `continuity summarize` | Compact digest of the whole project |
 | `continuity review` | Audit risk / tests / docs / next best move (`--apply` to enqueue) |
@@ -159,6 +160,7 @@ continuity resume --raw | pbcopy      # the exact prompt to restart, copied
 | `continuity graph` | Render the knowledge graph (`--json` for tooling) |
 | `continuity pack <topic>` | Generate a focused context bundle for one area (`--save`) |
 | `continuity analyze` | Inspect the repository for local project intelligence (`--json`) |
+| `continuity metrics` | Show usage signal and task-completion velocity (`--json`) |
 | `continuity handoff --to <agent>` | Model-specific briefing for `claude` · `gpt` · `cursor` · `gemini` · `generic` |
 | `continuity resume` | Print the best prompt to restart work now (`--raw` to pipe) |
 
@@ -221,15 +223,19 @@ The daily pain this targets: not re-explaining your project to every AI.
 - **Sync-ready data** — records carry stable ids, a schema version, and a content
   hash so a future sync can merge safely. See
   [docs/sync-ready-data.md](docs/sync-ready-data.md).
+- **Self-improving metrics** — `done` completes tasks; `metrics` (and the
+  Momentum line in `status`/`review`) track checkpoint/handoff/decision counts
+  and completion velocity, all local. See [docs/metrics.md](docs/metrics.md).
 
 ## Roadmap
 
 Built so the local-first core never breaks; every future piece is an additive seam.
 
 - **Now** — model-specific handoffs, context packs, repository intelligence,
-  decision retrieval, local ask, git checkpoints, sync-ready data.
-- **Next** — self-improving metrics, entity auto-linking, embeddings-backed
-  recall/ask (behind the same local-first fallback).
+  decision retrieval, local ask, git checkpoints, sync-ready data,
+  self-improving metrics.
+- **Next** — entity auto-linking, embeddings-backed recall/ask (behind the same
+  local-first fallback).
 - **Then** — a model-adapter execution layer, an autonomous `continuity run`
   loop, multi-agent orchestration, plus the Sync and Team layers.
 

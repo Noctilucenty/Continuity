@@ -1,6 +1,6 @@
 {
   "name": "continuity",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "An AI project runtime that keeps work moving across Claude, GPT, Cursor, Gemini, and future agents. Never lose AI project context again.",
   "bin": {
     "continuity": "dist/cli.js"

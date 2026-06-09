@@ -1,5 +1,6 @@
 import pc from "picocolors";
 import { requireProject } from "./_shared";
+import { bump } from "../store/metrics";
 import { loadConfig, setMemory } from "../core/memory";
 import { generateTasks } from "../core/planner";
 import { loadQueue, saveQueue, mergeTasks, sortedByPriority } from "../core/tasks";
@@ -32,6 +33,7 @@ export async function plan(goal: string | undefined): Promise<void> {
   const queue = await loadQueue(p);
   const { merged, added } = mergeTasks(queue, incoming);
   await saveQueue(p, merged);
+  if (added.length) await bump(p, "tasksCreated", added.length);
 
   if (added.length === 0) {
     logger.info("No new tasks — the queue already reflects your memory.");

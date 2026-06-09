@@ -1,5 +1,6 @@
 import { requireProject, UserError } from "./_shared";
 import { buildPack, renderPack } from "../context/contextPack";
+import { bump } from "../store/metrics";
 import { writeText } from "../utils/fs";
 import { logger } from "../utils/logger";
 import { relativePath } from "../utils/format";
@@ -22,6 +23,7 @@ export async function pack(
 
   const built = await buildPack(p, topic);
   const doc = renderPack(built);
+  await bump(p, "packs");
 
   logger.line(doc);
 

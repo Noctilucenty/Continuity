@@ -2,6 +2,7 @@ import { requireProject, UserError } from "./_shared";
 import { generateHandoff } from "../core/handoffs";
 import { normalizeTarget, getAdapter } from "../adapters/modelAdapters";
 import { loadQueue, nextActionable } from "../core/tasks";
+import { bump } from "../store/metrics";
 import { AGENT_TARGETS } from "../types";
 import { logger } from "../utils/logger";
 import { relativePath } from "../utils/format";
@@ -26,6 +27,7 @@ export async function handoff(
   }
 
   const doc = await generateHandoff(p, target);
+  await bump(p, "handoffs", 1, { target });
 
   if (opts.print) {
     logger.line(doc);

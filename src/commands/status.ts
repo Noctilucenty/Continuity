@@ -4,18 +4,20 @@ import { loadConfig } from "../core/memory";
 import { loadQueue, loadCompleted, nextActionable, sortedByPriority } from "../core/tasks";
 import { readLatestCheckpoint, checkpointAge } from "../core/checkpoints";
 import { loadEntries } from "../core/knowledge";
+import { loadMetrics, velocity } from "../store/metrics";
 import { logger } from "../utils/logger";
 import { pluralize, truncate } from "../utils/format";
 
 /** The dashboard: one screen that says where the project stands. */
 export async function status(): Promise<void> {
   const p = await requireProject();
-  const [config, queue, completed, cp, entries] = await Promise.all([
+  const [config, queue, completed, cp, entries, m] = await Promise.all([
     loadConfig(p),
     loadQueue(p),
     loadCompleted(p),
     readLatestCheckpoint(p),
     loadEntries(p),
+    loadMetrics(p),
   ]);
 
   logger.heading(`${config?.name ?? "Project"} · Continuity`);
@@ -34,6 +36,13 @@ export async function status(): Promise<void> {
   );
   logger.line(`  ${pc.bold("Knowledge")}  ${pluralize(entries.length, "entry", "entries")}`);
   logger.line(`  ${pc.bold("Checkpoint")} ${checkpointAge(cp)}`);
+
+  const v = velocity(m);
+  logger.line(
+    `  ${pc.bold("Momentum")}   ${v.total} completed` +
+      `  ·  ${v.last7Days} in last 7d (~${v.perDay7}/day)` +
+      `  ·  ${m.counters.checkpoints} checkpoints`
+  );
 
   const next = nextActionable(queue);
   logger.heading("Next best task");

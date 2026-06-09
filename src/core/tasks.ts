@@ -120,3 +120,27 @@ export function updateStatus(task: Task, status: TaskStatus): Task {
     updatedAt: now(),
   };
 }
+
+/**
+ * Complete a task: move it from the queue into completed_tasks.json. Defaults to
+ * the current next-actionable task. Returns the completed task and the new next
+ * task, or null if there was nothing to complete. Metrics are the caller's job
+ * (keeps this module free of a metrics dependency).
+ */
+export async function completeTask(
+  p: Paths,
+  idOrPrefix?: string
+): Promise<{ completed: Task; next?: Task } | null> {
+  const queue = await loadQueue(p);
+  const task = idOrPrefix ? findTask(queue, idOrPrefix) : nextActionable(queue);
+  if (!task) return null;
+
+  const completed = updateStatus(task, "done");
+  const remaining = queue.filter((t) => t.id !== task.id);
+  await saveQueue(p, remaining);
+
+  const completedList = await loadCompleted(p);
+  await saveCompleted(p, [...completedList, completed]);
+
+  return { completed, next: nextActionable(remaining) };
+}

@@ -8,6 +8,7 @@ import { ask } from "../utils/prompt";
 import { logger } from "../utils/logger";
 import { now, relativePath } from "../utils/format";
 import { newProjectId, SCHEMA_VERSION } from "../store/metadata";
+import { defaultMetrics } from "../store/metrics";
 
 /**
  * Scaffold a complete `.continuity/` workspace. Idempotent-ish: refuses to
@@ -67,12 +68,13 @@ export async function init(opts: { force?: boolean; name?: string }): Promise<vo
   // Config + root doc.
   const config: ProjectConfig = {
     name,
-    version: "0.3.0",
+    version: "0.4.0",
     createdAt: now(),
     projectId: newProjectId(),
     schemaVersion: SCHEMA_VERSION,
   };
   await writeJson(p.config, config);
+  await writeJson(p.metrics, defaultMetrics());
   await writeText(p.rootDoc, rootDoc(name));
 
   logger.success(`Continuity initialized for ${name}.`);

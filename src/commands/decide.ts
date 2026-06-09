@@ -1,6 +1,7 @@
 import { requireProject } from "./_shared";
 import { addEntry, addRelation, ensureEntity, updateEntry } from "../core/knowledge";
 import { appendSection } from "../core/memory";
+import { bump } from "../store/metrics";
 import { ask, askMultiline } from "../utils/prompt";
 import { logger } from "../utils/logger";
 import { truncate } from "../utils/format";
@@ -90,6 +91,8 @@ export async function decide(opts: DecideOpts): Promise<void> {
       note: reason.trim() || undefined,
     });
   }
+
+  await bump(p, "decisions");
 
   logger.success("Decision recorded.");
   logger.line(`  ${truncate(title.trim(), 90)}`);

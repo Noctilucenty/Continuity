@@ -23,6 +23,7 @@ export function paths(cwd = process.cwd()) {
     root,
     rootDoc: path.join(cwd, ROOT_DOC),
     config: path.join(root, "config.json"),
+    metrics: path.join(root, "metrics.json"),
 
     memory: {
       dir: memory,

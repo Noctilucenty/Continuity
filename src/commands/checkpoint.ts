@@ -12,6 +12,7 @@ import {
   summarizeChanges,
   GitChange,
 } from "../git/gitSummary";
+import { bump } from "../store/metrics";
 import { ask, askMultiline } from "../utils/prompt";
 import { logger } from "../utils/logger";
 import { relativePath, pluralize, truncate } from "../utils/format";
@@ -206,6 +207,10 @@ async function createCheckpoint(
 
   // 6. Regenerate every handoff so any agent can pick up cold.
   await generateAllHandoffs(p);
+
+  // Metrics: count this checkpoint and any tasks it generated.
+  await bump(p, "checkpoints");
+  if (added.length) await bump(p, "tasksCreated", added.length);
 
   // Report.
   logger.success("Continuity checkpoint created.");

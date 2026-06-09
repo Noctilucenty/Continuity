@@ -1,6 +1,7 @@
 import pc from "picocolors";
 import { requireProject, UserError } from "./_shared";
 import { askQuestion } from "../search/ask";
+import { bump } from "../store/metrics";
 import { logger } from "../utils/logger";
 
 /**
@@ -16,6 +17,7 @@ export async function ask(question: string | undefined): Promise<void> {
   }
 
   const result = await askQuestion(p, question);
+  await bump(p, "asks");
 
   logger.heading(`Q: ${result.question}`);
 
