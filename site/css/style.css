@@ -191,6 +191,11 @@ em{font-style:normal;color:#fff}
 .silo:hover{transform:translateY(-6px);color:#fff;border-color:transparent;border-style:solid}
 .silo:hover::before{opacity:.14}
 .silo:hover .silo-ic{color:#fff;background:rgba(255,255,255,.12)}
+/* converge variant: silos pull back into Continuity */
+.converge .hub{border-color:rgba(167,139,250,.5);box-shadow:0 0 70px rgba(139,92,246,.6),inset 0 0 30px rgba(139,92,246,.18)}
+.converge .hub span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:700}
+.converge .silo{border-style:solid;border-color:rgba(255,255,255,.12)}
+.converge .scatter-lines .lines line{opacity:1}
 @media(max-width:760px){
   .scatter{aspect-ratio:auto;max-width:none;display:grid;grid-template-columns:1fr 1fr;gap:12px}
   .scatter-lines,.hub{display:none}
