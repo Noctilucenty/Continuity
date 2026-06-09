@@ -160,12 +160,22 @@ em{font-style:normal;color:#fff}
 .reveal.in{opacity:1;transform:none;filter:blur(0)}
 
 /* ── Silos / problem ──────────────────────────────── */
-.silos{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:64px}
-.silo{padding:22px 20px;border:1px solid var(--card-bd);border-radius:16px;background:var(--card);color:var(--muted);font-weight:500;
-  transition:.4s var(--ease);position:relative;overflow:hidden}
+.lead{font-size:clamp(17px,2.1vw,21px);color:#c4c8d6;line-height:1.55;max-width:640px;margin:-26px 0 40px}
+.lead em{font-style:normal;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:700}
+.silos{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-bottom:64px}
+.silo{display:flex;align-items:center;gap:12px;padding:20px;border:1px dashed var(--card-bd);border-radius:16px;
+  background:var(--card);color:var(--muted);font-weight:500;font-size:15px;line-height:1.35;
+  transition:.4s var(--ease);position:relative;overflow:hidden;animation:siloFloat 7s ease-in-out infinite}
+.silo:nth-child(2){animation-delay:-1s}.silo:nth-child(3){animation-delay:-2.2s}
+.silo:nth-child(4){animation-delay:-3.1s}.silo:nth-child(5){animation-delay:-4.4s}.silo:nth-child(6){animation-delay:-5.5s}
+@keyframes siloFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.silo-ic{flex:none;width:34px;height:34px;display:grid;place-items:center;border-radius:10px;color:#a9b0c6;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);transition:.4s var(--ease)}
+.silo-ic svg{width:18px;height:18px}
 .silo::before{content:"";position:absolute;inset:0;background:var(--grad);opacity:0;transition:opacity .4s}
-.silo:hover{transform:translateY(-4px);color:#fff;border-color:transparent}
+.silo:hover{transform:translateY(-5px);color:#fff;border-color:transparent;border-style:solid}
 .silo:hover::before{opacity:.14}
+.silo:hover .silo-ic{color:#fff;background:rgba(255,255,255,.12)}
 
 .tax h3{font-size:clamp(24px,3vw,34px);font-weight:700;margin-bottom:6px;letter-spacing:-.02em}
 .tax>p{color:var(--muted);max-width:620px;margin-bottom:34px}
