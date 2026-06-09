@@ -4,6 +4,19 @@ All notable changes to Continuity are documented here. Each version below has a
 matching tag and GitHub Release. Format follows Keep a Changelog; versions are
 pre-1.0 and additive (the local-first, files-as-truth core never breaks).
 
+## v0.11.0 — Interactive Wizard
+
+Make the first-run loop guided without replacing the CLI underneath.
+
+- Added `continuity wizard` for guided init, goal planning, optional next-task
+  start, and optional git checkpoint.
+- Added a Wizard action to the TUI dashboard, including uninitialized projects.
+- Kept the wizard as an orchestration layer over existing `init`, `plan`,
+  `next`, and `checkpoint` commands.
+- Added scriptable wizard inputs (`--name`, `--goal`, `--start`,
+  `--checkpoint`) so tests and automation do not need a TTY.
+- Fixed the TUI action row so buttons render once in the full-screen dashboard.
+
 ## v0.10.0 — Interactive Terminal UI
 
 Make Continuity usable without memorizing commands while keeping the CLI as the

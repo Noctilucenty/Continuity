@@ -148,15 +148,21 @@ platform notes (including clipboard tools).
 
 ```bash
 cd your-project
-continuity init                       # start building with Continuity
-continuity plan "Build the trader dashboard with live odds"
+continuity wizard                     # guided init, plan, next, checkpoint
 ```
 
 Then just type `continuity` any time. In a real terminal it opens the local
 interactive dashboard: project state, tasks, recent checkpoints, and buttons for
-Next, Checkpoint, Handoff, Resume, Ask, and Pack. In pipes, scripts, and CI it
-falls back to the short plain dashboard and exits cleanly. For the grouped
+Wizard, Next, Checkpoint, Handoff, Resume, Ask, and Pack. In pipes, scripts, and
+CI it falls back to the short plain dashboard and exits cleanly. For the grouped
 command list, run `continuity --help`.
+
+Prefer the individual commands? The wizard delegates to the same CLI underneath:
+
+```bash
+continuity init
+continuity plan "Build the trader dashboard with live odds"
+```
 
 ### The daily 5-command loop
 
@@ -201,6 +207,7 @@ continuity pack memory --copy         # focused context bundle -> clipboard
 |---------|--------------|
 | `continuity init` | Scaffold `.continuity/` in the current directory |
 | `continuity ui` | Open the interactive terminal dashboard |
+| `continuity wizard` | Guided init, plan, next, and checkpoint flow |
 | `continuity status` | Dashboard: tasks, knowledge, last checkpoint |
 | `continuity plan [goal]` | Turn your goal + memory into a scored task list |
 | `continuity next` | Start the single highest-leverage task |

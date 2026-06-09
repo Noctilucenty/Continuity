@@ -11,13 +11,13 @@ import { TaskStatus } from "../types";
 import { relativeTime, truncate } from "../utils/format";
 
 export type DashboardActionId =
+  | "wizard"
   | "next"
   | "checkpoint"
   | "handoff"
   | "resume"
   | "ask"
-  | "pack"
-  | "init";
+  | "pack";
 
 export interface DashboardAction {
   id: DashboardActionId;
@@ -49,6 +49,7 @@ export interface DashboardModel {
 }
 
 export const PROJECT_ACTIONS: DashboardAction[] = [
+  { id: "wizard", label: "Wizard", key: "w", command: ["wizard"] },
   { id: "next", label: "Next", key: "n", command: ["next"] },
   { id: "checkpoint", label: "Checkpoint", key: "c", command: ["checkpoint", "--from-git"] },
   { id: "handoff", label: "Handoff", key: "h", command: ["handoff", "--to", "claude"] },
@@ -58,7 +59,7 @@ export const PROJECT_ACTIONS: DashboardAction[] = [
 ];
 
 const INIT_ACTIONS: DashboardAction[] = [
-  { id: "init", label: "Init", key: "i", command: ["init"] },
+  { id: "wizard", label: "Wizard", key: "w", command: ["wizard"] },
 ];
 
 export async function gatherDashboard(p: Paths = paths()): Promise<DashboardModel> {
@@ -137,7 +138,7 @@ export function renderDashboardPlain(m: DashboardModel): string {
     }
   }
 
-  lines.push("", "Actions:", m.actions.map((a) => `[${a.label}]`).join(" "));
+  lines.push("", `Actions: ${m.actions.map((a) => `[${a.label}]`).join(" ")}`);
   return lines.join("\n");
 }
 
@@ -185,7 +186,7 @@ function renderLine(
   if (!line.startsWith("Actions:")) return truncateToWidth(line, width);
   const parts = actions.map((action, idx) => {
     const text = `[${action.label}]`;
-    return idx === selectedAction ? `>${text}<` : ` ${text} `;
+    return idx === selectedAction ? `>${text}<` : text;
   });
   return truncateToWidth(`Actions: ${parts.join(" ")}`, width);
 }

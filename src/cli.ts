@@ -28,6 +28,7 @@ import { home } from "./commands/home";
 import { mcp } from "./commands/mcp";
 import { agentInstall, agentStatus, agentUninstall } from "./commands/agent";
 import { runTerminalUi, shouldLaunchTerminalUi } from "./ui/terminal";
+import { wizard } from "./commands/wizard";
 
 /** Collect repeatable options (e.g. --changed a --changed b) into an array. */
 function collect(value: string, previous: string[]): string[] {
@@ -39,7 +40,7 @@ const program = new Command();
 program
   .name("continuity")
   .description("An AI project runtime. Never lose AI project context again.")
-  .version("0.10.0");
+  .version("0.11.0");
 
 // Grouped, scannable help: hide the flat auto-list and print our own groups so
 // the everyday commands are visibly prioritized.
@@ -49,6 +50,7 @@ const GROUPED_HELP = [
   "  Everyday:",
   "    init          Scaffold a Continuity project here",
   "    ui            Open the interactive terminal dashboard",
+  "    wizard        Guided init, plan, next, and checkpoint flow",
   "    status        Show the project dashboard",
   "    plan          Generate tasks from your goal and memory",
   "    next          Start the highest-leverage task",
@@ -104,6 +106,15 @@ program
   .command("ui")
   .description("Open the interactive terminal dashboard")
   .action(() => runTerminalUi());
+
+program
+  .command("wizard")
+  .description("Guided init, plan, next, and checkpoint flow")
+  .option("--name <name>", "Project name to use when initializing")
+  .option("--goal <goal>", "Project goal to plan")
+  .option("--start", "Start the next task after planning")
+  .option("--checkpoint", "Create a checkpoint from current git changes")
+  .action(wizard);
 
 program
   .command("status")

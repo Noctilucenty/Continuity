@@ -22,7 +22,7 @@ describe("interactive dashboard model", () => {
 
     expect(model.initialized).toBe(false);
     expect(model.nextAction).toBe("continuity init");
-    expect(model.actions.map((a) => a.label)).toEqual(["Init"]);
+    expect(model.actions.map((a) => a.label)).toEqual(["Wizard"]);
   });
 
   it("summarizes project state, completed tasks, open tasks, checkpoints, and actions", async () => {
@@ -63,7 +63,7 @@ describe("interactive dashboard model", () => {
     expect(out).toContain("Interactive wizard");
     expect(out).toContain("Recent checkpoints:");
     expect(out).toContain("Implement dashboard screen");
-    expect(out).toContain("[Next] [Checkpoint] [Handoff] [Resume] [Ask] [Pack]");
+    expect(out).toContain("[Wizard] [Next] [Checkpoint] [Handoff] [Resume] [Ask] [Pack]");
   });
 });
 
@@ -75,7 +75,17 @@ describe("interactive dashboard rendering", () => {
 
     expect(selectedActionIndex(model.actions, 0, 1)).toBe(0);
     expect(selectedActionIndex(model.actions, 0, -1)).toBe(0);
-    expect(renderDashboardScreen(model, 0, { columns: 70, rows: 20 })).toContain(">[Init]<");
+    expect(renderDashboardScreen(model, 0, { columns: 70, rows: 20 })).toContain(">[Wizard]<");
+  });
+
+  it("keeps the full project action row visible at a normal terminal width", async () => {
+    const { p, cleanup } = await tmpProject();
+    cleanups.push(cleanup);
+    await writeJson(p.config, { name: "Continuity", version: "0.11.0", createdAt: new Date().toISOString() });
+
+    const model = await gatherDashboard(p);
+    const screen = renderDashboardScreen(model, 0, { columns: 80, rows: 24 });
+    expect(screen).toContain(">[Wizard]< [Next] [Checkpoint] [Handoff] [Resume] [Ask] [Pack]");
   });
 });
 

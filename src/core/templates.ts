@@ -84,6 +84,7 @@ Goal → Plan → Task Queue → Agent Executes → Checkpoint
 
 | Command | What it does |
 |---------|--------------|
+| \`continuity wizard\` | Guided init, plan, next, and checkpoint flow |
 | \`continuity status\` | Project dashboard: state, tasks, last checkpoint |
 | \`continuity plan "<goal>"\` | Generate a scored task list from your goal + memory |
 | \`continuity next\` | Start the single highest-leverage task |
