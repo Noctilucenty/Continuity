@@ -59,9 +59,8 @@
   <nav class="nav-links" id="navLinks">
     <a href="#problem">Problem</a>
     <a href="#solution">Solution</a>
-    <a href="#engines">Engines</a>
-    <a href="#graph">Architecture</a>
-    <a href="#future">Future</a>
+    <a href="#memory-vs">Why it's different</a>
+    <a href="#engines">How it works</a>
     <a class="nav-links-cta" href="#cta">Get Started</a>
   </nav>
   <div class="nav-right">
@@ -194,16 +193,6 @@
           <span class="silo-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m9 8-5 4 5 4"/><path d="m15 8 5 4-5 4"/></svg></span>
           Cursor sessions</div></div>
       </div>
-
-      <div class="tax reveal">
-        <h3>The “Rebuild Tax”</h3>
-        <p>Teams waste countless hours reconstructing context every time a session expires or a model switches.</p>
-        <div class="tax-grid">
-          <div class="tax-card"><span class="num" data-count="100" data-suffix="%">0</span><p>of token-limit hours, gone</p></div>
-          <div class="tax-card"><span class="num" data-count="0" data-prefix="∞" data-static="1">∞</span><p>decisions lose their reasoning</p></div>
-          <div class="tax-card"><span class="num" data-count="0" data-prefix="✕" data-static="1">✕</span><p>momentum, interrupted</p></div>
-        </div>
-      </div>
     </div>
   </section>
 
@@ -279,24 +268,6 @@
         <div class="silo-pos" style="--x:19%;--y:34%"><div class="silo">
           <span class="silo-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m9 8-5 4 5 4"/><path d="m15 8 5 4-5 4"/></svg></span>
           Cursor sessions</div></div>
-      </div>
-
-      <div class="pillars">
-        <article class="pillar card-3d reveal" style="--d:.05s">
-          <div class="pillar-icon">◆</div>
-          <h3>Permanent Intelligence</h3>
-          <p>Captures every action and decision, transforming daily work into long-term institutional knowledge.</p>
-        </article>
-        <article class="pillar card-3d reveal" style="--d:.15s">
-          <div class="pillar-icon">∞</div>
-          <h3>Beyond Limits</h3>
-          <p>Survives session expirations, context-window constraints, and provider outages — seamlessly.</p>
-        </article>
-        <article class="pillar card-3d reveal" style="--d:.25s">
-          <div class="pillar-icon">⇄</div>
-          <h3>Model Agnostic</h3>
-          <p>Move between Claude, GPT, and Cursor without losing a single detail of project context.</p>
-        </article>
       </div>
     </div>
   </section>
@@ -383,70 +354,6 @@
           <h3>Sync Layer</h3>
           <p>Your understanding, synced everywhere — and across the team.</p>
         </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- ░░ KNOWLEDGE GRAPH + MULTI-AGENT ░░ -->
-  <section class="section" id="graph">
-    <div class="container">
-      <p class="kicker reveal">ADVANCED ARCHITECTURE</p>
-      <h2 class="headline reveal">Knowledge graphs &amp;<br><span class="grad">multi-agent collaboration.</span></h2>
-      <div class="graph-wrap">
-        <div class="graph-viz reveal">
-          <svg viewBox="0 0 400 300" class="kg">
-            <g class="edges" stroke="url(#g-main)" stroke-width="1.4" fill="none" opacity="0.5">
-              <line x1="200" y1="150" x2="90"  y2="70"/>
-              <line x1="200" y1="150" x2="320" y2="80"/>
-              <line x1="200" y1="150" x2="80"  y2="230"/>
-              <line x1="200" y1="150" x2="330" y2="220"/>
-              <line x1="90"  y1="70"  x2="320" y2="80"/>
-              <line x1="80"  y1="230" x2="330" y2="220"/>
-            </g>
-            <g class="nodes">
-              <g class="node n-core"><circle cx="200" cy="150" r="26"/><text x="200" y="154">Memory</text></g>
-              <g class="node"><circle cx="90"  cy="70"  r="20"/><text x="90"  y="74">Planner</text></g>
-              <g class="node"><circle cx="320" cy="80"  r="20"/><text x="320" y="84">Builder</text></g>
-              <g class="node"><circle cx="80"  cy="230" r="20"/><text x="80"  y="234">Reviewer</text></g>
-              <g class="node"><circle cx="330" cy="220" r="20"/><text x="330" y="224">Vision</text></g>
-            </g>
-          </svg>
-        </div>
-        <div class="graph-copy">
-          <div class="gc reveal"><h4>Direct Navigation</h4><p>AI navigates understanding directly instead of reading thousands of files.</p></div>
-          <div class="gc reveal" style="--d:.1s"><h4>Concept Mapping</h4><p>Connects vision to implementation, and risks to architectural choices.</p></div>
-          <div class="gc reveal" style="--d:.2s"><h4>Scalable Context</h4><p>Keeps complexity manageable as projects grow to massive scale.</p></div>
-          <p class="quote reveal" style="--d:.3s">“A collaborative intelligence system where every agent contributes to the same core brain.”</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ░░ FUTURE / AUTONOMOUS LOOP ░░ -->
-  <section class="section dark-band" id="future">
-    <div class="container">
-      <p class="kicker reveal">THE FUTURE</p>
-      <h2 class="headline reveal">Autonomous execution &amp;<br><span class="grad">context compression.</span></h2>
-      <div class="future-grid">
-        <div class="loop reveal">
-          <h3>↻ Continuity Run</h3>
-          <div class="loop-ring">
-            <div class="loop-steps">
-              <span class="ls" style="--i:0">Analyze Project</span>
-              <span class="ls" style="--i:1">Generate Task</span>
-              <span class="ls" style="--i:2">Execute &amp; Checkpoint</span>
-              <span class="ls" style="--i:3">Review &amp; Update</span>
-            </div>
-            <div class="loop-core">∞</div>
-          </div>
-          <p class="loop-note">Humans become supervisors of the execution environment.</p>
-        </div>
-        <div class="compress reveal" style="--d:.15s">
-          <h3>Context Compression</h3>
-          <div class="stat-row"><span class="num" data-count="100000" data-suffix="+">0</span><p>messages handled per project</p></div>
-          <div class="stat-row"><span class="num" data-count="10000" data-suffix="+">0</span><p>files distilled into insight</p></div>
-          <div class="stat-row"><span class="num" data-count="1" data-suffix="" data-word="minutes">0</span><p>to onboard a new AI to a massive project — not&nbsp;weeks</p></div>
-        </div>
       </div>
     </div>
   </section>

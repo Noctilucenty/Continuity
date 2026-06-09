@@ -148,7 +148,7 @@ em{font-style:normal;color:#fff}
 @keyframes scrolldot{0%{opacity:0;top:7px}40%{opacity:1}80%{opacity:0;top:20px}100%{opacity:0}}
 
 /* ── Sections ─────────────────────────────────────── */
-.section{position:relative;z-index:2;padding:clamp(90px,13vh,160px) 0}
+.section{position:relative;z-index:2;padding:clamp(60px,9vh,108px) 0}
 .container{width:90%;max-width:var(--maxw);margin:0 auto}
 .narrow{max-width:820px}
 .dark-band{background:linear-gradient(180deg,transparent,rgba(10,12,20,.7) 12%,rgba(10,12,20,.7) 88%,transparent)}
