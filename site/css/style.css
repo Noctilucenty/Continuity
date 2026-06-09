@@ -1,6 +1,13 @@
 /* ============================================================
    Continuity — keynote-style site
    ============================================================ */
+/* Satoshi — self-hosted (Fontshare, ITF Free Font License) */
+@font-face{font-family:'Satoshi';src:url('../fonts/satoshi-300.woff2') format('woff2');font-weight:300;font-style:normal;font-display:swap}
+@font-face{font-family:'Satoshi';src:url('../fonts/satoshi-400.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Satoshi';src:url('../fonts/satoshi-500.woff2') format('woff2');font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:'Satoshi';src:url('../fonts/satoshi-700.woff2') format('woff2');font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:'Satoshi';src:url('../fonts/satoshi-900.woff2') format('woff2');font-weight:900;font-style:normal;font-display:swap}
+
 :root{
   --bg:#05060a;
   --bg-2:#0a0c14;
@@ -21,7 +28,7 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{
-  font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  font-family:'Satoshi',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
   background:var(--bg);
   color:var(--ink);
   line-height:1.55;
@@ -226,7 +233,7 @@ em{font-style:normal;color:#fff}
 .kg .edges line{stroke-dasharray:5 7;animation:dash 22s linear infinite}
 @keyframes dash{to{stroke-dashoffset:-200}}
 .kg .node circle{fill:rgba(139,92,246,.14);stroke:url(#g-main);stroke-width:1.6;transition:.4s}
-.kg .node text{fill:#e9eafc;font-size:11px;font-weight:600;text-anchor:middle;font-family:'Inter',sans-serif}
+.kg .node text{fill:#e9eafc;font-size:11px;font-weight:600;text-anchor:middle;font-family:'Satoshi',sans-serif}
 .kg .node{animation:nodefloat 7s ease-in-out infinite}
 .kg .node:nth-child(2){animation-delay:.4s}.kg .node:nth-child(3){animation-delay:.9s}
 .kg .node:nth-child(4){animation-delay:1.3s}.kg .node:nth-child(5){animation-delay:1.7s}
@@ -276,7 +283,7 @@ em{font-style:normal;color:#fff}
 .term-bar i{width:11px;height:11px;border-radius:50%;background:#3a3d4a}
 .term-bar i:nth-child(1){background:#ff5f57}.term-bar i:nth-child(2){background:#febc2e}.term-bar i:nth-child(3){background:#28c840}
 .term-bar span{margin-left:auto;font-size:12px;color:var(--muted);font-family:'JetBrains Mono',monospace}
-.term-copy{margin-left:14px;font-size:11.5px;font-weight:600;color:var(--muted);font-family:'Inter',sans-serif;
+.term-copy{margin-left:14px;font-size:11.5px;font-weight:600;color:var(--muted);font-family:'Satoshi',sans-serif;
   padding:5px 12px;border-radius:8px;border:1px solid var(--card-bd);background:rgba(255,255,255,.04);cursor:pointer;transition:.25s var(--ease)}
 .term-copy:hover{color:#fff;border-color:rgba(255,255,255,.25)}
 .term-copy.copied{color:#34d399;border-color:rgba(52,211,153,.5)}
