@@ -179,24 +179,6 @@
     });
   }
 
-  /* ── Scatter ⇄ Converge toggle ───────────────────── */
-  const shift = $('#shift');
-  if (shift) {
-    const tgBtns = $$('.tg-btn', shift);
-    let auto = null, locked = false;
-    const setState = (toIn) => {
-      shift.classList.toggle('converge', toIn);
-      tgBtns.forEach((b) => b.classList.toggle('active', (b.dataset.state === 'in') === toIn));
-    };
-    const stopAuto = () => { if (auto) { clearInterval(auto); auto = null; } };
-    const startAuto = () => { if (!auto && !locked && !reduce) auto = setInterval(() => setState(!shift.classList.contains('converge')), 3200); };
-    tgBtns.forEach((b) => b.addEventListener('click', () => { locked = true; stopAuto(); setState(b.dataset.state === 'in'); }));
-    new IntersectionObserver(
-      (es) => es.forEach((e) => (e.isIntersecting ? startAuto() : stopAuto())),
-      { threshold: 0.4 }
-    ).observe(shift);
-  }
-
   /* ── Smooth-scroll for in-page anchors ───────────── */
   $$('a[href^="#"]').forEach((a) => {
     a.addEventListener('click', (e) => {
