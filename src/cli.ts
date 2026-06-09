@@ -25,6 +25,8 @@ import { metrics } from "./commands/metrics";
 import { entityAdd, entityList } from "./commands/entity";
 import { link } from "./commands/link";
 import { home } from "./commands/home";
+import { mcp } from "./commands/mcp";
+import { agentInstall, agentStatus, agentUninstall } from "./commands/agent";
 
 /** Collect repeatable options (e.g. --changed a --changed b) into an array. */
 function collect(value: string, previous: string[]): string[] {
@@ -36,7 +38,7 @@ const program = new Command();
 program
   .name("continuity")
   .description("An AI project runtime. Never lose AI project context again.")
-  .version("0.7.0");
+  .version("0.8.0");
 
 // Grouped, scannable help: hide the flat auto-list and print our own groups so
 // the everyday commands are visibly prioritized.
@@ -72,6 +74,10 @@ const GROUPED_HELP = [
   "    metrics       Usage signal and task-completion velocity",
   "    review        Audit risk, tests, docs, and the next move",
   "    summarize     Compact digest of the whole project",
+  "",
+  "  Automatic (agents):",
+  "    agent         Wire Claude Code/Codex/Cursor to auto resume + checkpoint",
+  "    mcp           Run the MCP server over stdio (launched by agents)",
   "",
   "Run `continuity` with no arguments for your dashboard and next action.",
   "Run `continuity help <command>` for details on one command.",
@@ -196,6 +202,30 @@ program
   .description("Show usage signal and task-completion velocity")
   .option("--json", "Emit the raw metrics as JSON")
   .action(metrics);
+
+program
+  .command("mcp")
+  .description("Run the MCP server over stdio (for AI agents to call Continuity tools)")
+  .action(mcp);
+
+const agentCmd = program
+  .command("agent")
+  .description("Wire AI agents (Claude Code, Codex, Cursor) to Continuity");
+agentCmd
+  .command("install")
+  .description("Install MCP config + lifecycle instructions for an agent")
+  .option("--runner <runner>", "claude | codex | cursor | all", "all")
+  .action(agentInstall);
+agentCmd
+  .command("status")
+  .description("Show which agent hooks are installed")
+  .option("--runner <runner>", "claude | codex | cursor | all", "all")
+  .action(agentStatus);
+agentCmd
+  .command("uninstall")
+  .description("Remove Continuity agent hooks")
+  .option("--runner <runner>", "claude | codex | cursor | all", "all")
+  .action(agentUninstall);
 
 program
   .command("graph")

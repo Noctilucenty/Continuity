@@ -1,6 +1,6 @@
 {
   "name": "continuity",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "An AI project runtime that keeps work moving across Claude, GPT, Cursor, Gemini, and future agents. Never lose AI project context again.",
   "keywords": [
     "ai",

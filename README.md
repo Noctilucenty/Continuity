@@ -166,6 +166,20 @@ continuity handoff --to claude --copy # 5. brief the next AI (on your clipboard)
 
 That's the whole rhythm. See [docs/user-friendly-cli.md](docs/user-friendly-cli.md).
 
+### Automatic mode (MCP)
+
+Let your AI agent run the loop for you — load context at the start, checkpoint
+before it stops — with no manual commands:
+
+```bash
+continuity agent install            # wires Claude Code, Codex, and Cursor
+```
+
+This adds a local Continuity MCP server (`continuity mcp`) the agent calls, plus
+a short lifecycle instruction in `CLAUDE.md` / `AGENTS.md` / Cursor rules.
+Continuity makes no model calls — the agent is the intelligence; Continuity just
+provides local tools. See [docs/agent-lifecycle.md](docs/agent-lifecycle.md).
+
 ### Copy-paste handoffs
 
 The core pain Continuity removes is re-explaining your project to another AI.
@@ -270,6 +284,9 @@ The daily pain this targets: not re-explaining your project to every AI.
 - **User-friendly CLI** — bare `continuity` is a dashboard with your next action,
   `--copy` puts handoffs/resume/packs on your clipboard, help is grouped, and
   empty states guide you. See [docs/user-friendly-cli.md](docs/user-friendly-cli.md).
+- **Automatic agent lifecycle** — `continuity agent install` wires Claude Code /
+  Codex / Cursor to a local MCP server so they auto-resume and auto-checkpoint.
+  No model calls from Continuity. See [docs/agent-lifecycle.md](docs/agent-lifecycle.md).
 
 ## Roadmap
 

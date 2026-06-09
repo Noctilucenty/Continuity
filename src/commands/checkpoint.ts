@@ -1,10 +1,5 @@
 import { requireProject } from "./_shared";
-import { appendSection } from "../core/memory";
-import { makeCheckpoint, writeCheckpoint } from "../core/checkpoints";
-import { generateTasks } from "../core/planner";
-import { loadQueue, saveQueue, mergeTasks, nextActionable } from "../core/tasks";
-import { addEntry } from "../core/knowledge";
-import { generateAllHandoffs } from "../core/handoffs";
+import { createCheckpoint, CheckpointInput } from "../core/checkpointService";
 import {
   isGitRepo,
   getWorkingTreeChanges,
@@ -12,11 +7,9 @@ import {
   summarizeChanges,
   GitChange,
 } from "../git/gitSummary";
-import { bump } from "../store/metrics";
 import { ask, askMultiline } from "../utils/prompt";
 import { logger } from "../utils/logger";
 import { relativePath, pluralize, truncate } from "../utils/format";
-import { EntryType } from "../types";
 
 interface CheckpointOpts {
   summary?: string;
@@ -32,21 +25,6 @@ interface CheckpointOpts {
   /** Auto-checkpoint from git (v2B #4). */
   fromGit?: boolean;
   since?: string;
-}
-
-/** Resolved checkpoint fields, however they were sourced. */
-interface CheckpointInput {
-  summary: string;
-  changed: string[];
-  filesModified: string[];
-  worked: string[];
-  failed: string[];
-  blocker?: string;
-  nextAction?: string;
-  decisions: string[];
-  lessons: string[];
-  bugs: string[];
-  extraRisks: string[];
 }
 
 /**
@@ -67,7 +45,7 @@ export async function checkpoint(opts: CheckpointOpts): Promise<void> {
 
   if (!input) return; // git mode produced a graceful message and bailed
 
-  await createCheckpoint(p, input);
+  await runAndReport(p, input);
 }
 
 /* ---------- input acquisition ---------- */
@@ -148,90 +126,32 @@ async function fromGit(opts: CheckpointOpts): Promise<CheckpointInput | null> {
   };
 }
 
-/* ---------- checkpoint creation pipeline ---------- */
+/* ---------- reporting ---------- */
 
-async function createCheckpoint(
+async function runAndReport(
   p: import("../core/paths").Paths,
   input: CheckpointInput
 ): Promise<void> {
-  // 1. Update human-readable memory.
-  await appendSection(p.memory.currentState, `Checkpoint: ${input.summary}`, [
-    ...input.changed.map((c) => `Changed: ${c}`),
-    ...(input.blocker ? [`Blocker: ${input.blocker}`] : []),
-  ]);
-  if (input.failed.length) await appendSection(p.memory.bugs, "From checkpoint", input.failed);
-  if (input.extraRisks.length) await appendSection(p.memory.risks, "From git checkpoint", input.extraRisks);
+  const result = await createCheckpoint(p, input);
 
-  // 2. Capture typed knowledge into the 2A store.
-  let knowledgeAdded = 0;
-  const capture = async (items: string[], type: EntryType) => {
-    for (const item of items) {
-      const { added } = await addEntry(p, {
-        type,
-        title: item,
-        sourceFile: p.sessions.log,
-        source: "checkpoint",
-      });
-      if (added) knowledgeAdded++;
-    }
-  };
-  await capture(input.decisions, "decision");
-  await capture(input.lessons, "lesson");
-  // Explicit bugs win; otherwise failures double as discovered bugs.
-  await capture(input.bugs, "bug");
-
-  // 3. Build the suggested prompt for whoever resumes.
-  const next = input.nextAction || "Continue from the next best action in memory.";
-  const suggestedPrompt =
-    `Resume ${relativePath(p.cwd)}. Last checkpoint: ${input.summary}. Next: ${next}.` +
-    (input.blocker ? ` Note the blocker: ${input.blocker}.` : "");
-
-  // 4. Write the checkpoint record.
-  const cp = makeCheckpoint({
-    summary: input.summary,
-    changed: input.changed,
-    filesModified: input.filesModified,
-    worked: input.worked,
-    failed: input.failed,
-    blocker: input.blocker,
-    nextAction: input.nextAction,
-    suggestedPrompt,
-  });
-  const cpFile = await writeCheckpoint(p, cp);
-
-  // 5. Regenerate tasks from the now-updated memory.
-  const incoming = await generateTasks(p);
-  const queue = await loadQueue(p);
-  const { merged, added } = mergeTasks(queue, incoming);
-  await saveQueue(p, merged);
-
-  // 6. Regenerate every handoff so any agent can pick up cold.
-  await generateAllHandoffs(p);
-
-  // Metrics: count this checkpoint and any tasks it generated.
-  await bump(p, "checkpoints");
-  if (added.length) await bump(p, "tasksCreated", added.length);
-
-  // Report.
   logger.success("Continuity checkpoint created.");
-  logger.line(`  ${truncate(input.summary, 80)}`);
-  if (knowledgeAdded) {
-    logger.line(`${pluralize(knowledgeAdded, "knowledge entry", "knowledge entries")} captured.`);
+  logger.line(`  ${truncate(result.summary, 80)}`);
+  if (result.knowledgeAdded) {
+    logger.line(`${pluralize(result.knowledgeAdded, "knowledge entry", "knowledge entries")} captured.`);
   }
-  if (input.extraRisks.length) {
+  if (result.risks.length) {
     logger.heading("Risks flagged");
-    for (const r of input.extraRisks) logger.line(`  ! ${r}`);
+    for (const r of result.risks) logger.line(`  ! ${r}`);
   }
-  if (input.failed.length) logger.line(`${pluralize(input.failed.length, "issue")} tracked.`);
-  logger.line(`${pluralize(added.length, "next action")} generated.`);
+  if (result.failuresTracked) logger.line(`${pluralize(result.failuresTracked, "issue")} tracked.`);
+  logger.line(`${pluralize(result.tasksGenerated, "next action")} generated.`);
 
-  const top = nextActionable(merged);
-  if (top) {
+  if (result.nextTaskTitle) {
     logger.heading("Next best task");
-    logger.line(`  -> ${top.title}`);
+    logger.line(`  -> ${result.nextTaskTitle}`);
   }
   logger.line("");
-  logger.info(`Checkpoint saved to ${relativePath(cpFile)}`);
+  logger.info(`Checkpoint saved to ${relativePath(result.file)}`);
   logger.info(`Handoffs refreshed in ${relativePath(p.handoffs.dir)}/`);
 }
 
