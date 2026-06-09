@@ -31,6 +31,31 @@ describe("package metadata", () => {
     }
   });
 
+  // Publish hardening (release automation).
+  it("uses a scoped package name", () => {
+    expect(pkg.name.startsWith("@")).toBe(true);
+  });
+
+  it("publishConfig.access is public", () => {
+    expect(pkg.publishConfig?.access).toBe("public");
+  });
+
+  it("bin path does not start with ./ (canonical form npm expects)", () => {
+    for (const target of Object.values(pkg.bin) as string[]) {
+      expect(target.startsWith("./")).toBe(false);
+    }
+  });
+
+  it("has a valid semver version", () => {
+    expect(pkg.version).toMatch(/^\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?(\+[0-9A-Za-z.-]+)?$/);
+  });
+
+  it("files allowlist excludes source, tests, and .continuity", () => {
+    expect(pkg.files).not.toContain("src");
+    expect(pkg.files).not.toContain("test");
+    expect(pkg.files).not.toContain(".continuity");
+  });
+
   it("requires Node 20+", () => {
     expect(pkg.engines.node).toContain("20");
   });

@@ -1,0 +1,46 @@
+name: Release
+
+# Publishes to npm when a GitHub Release is published, using npm Trusted
+# Publishing (OIDC) — no NPM_TOKEN is stored anywhere. Requires the package's
+# Trusted Publisher to be configured on npmjs.com to point at this repo and the
+# workflow file `release.yml`. Until that is configured, the publish step will
+# fail by design (nothing is published without an authorized publisher).
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  id-token: write # required for npm Trusted Publishing (OIDC)
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          registry-url: https://registry.npmjs.org
+
+      # npm Trusted Publishing (OIDC) requires npm >= 11.5.1.
+      - name: Upgrade npm for OIDC support
+        run: npm install -g npm@latest
+
+      - run: npm ci
+
+      - name: Verify package version matches the release tag
+        run: node scripts/check-version-tag.js "${{ github.event.release.tag_name }}"
+
+      - run: npm run typecheck
+      - run: npm run build
+      - run: npm test
+      - run: npm run pack:check
+
+      - name: Publish to npm (Trusted Publishing / OIDC)
+        run: npm publish --access public
+        # No NODE_AUTH_TOKEN / NPM_TOKEN: npm provisions a short-lived token via
+        # OIDC because id-token:write is granted and a Trusted Publisher is set.
