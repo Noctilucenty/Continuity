@@ -1,5 +1,6 @@
 import { requireProject } from "./_shared";
 import { addEntry, addRelation, ensureEntity, updateEntry } from "../core/knowledge";
+import { linkDecision } from "../knowledge/autoLink";
 import { appendSection } from "../core/memory";
 import { bump } from "../store/metrics";
 import { ask, askMultiline } from "../utils/prompt";
@@ -94,9 +95,13 @@ export async function decide(opts: DecideOpts): Promise<void> {
 
   await bump(p, "decisions");
 
+  // Auto-link this decision to any known entities it mentions.
+  const linked = await linkDecision(p, entry);
+
   logger.success("Decision recorded.");
   logger.line(`  ${truncate(title.trim(), 90)}`);
   if (reason) logger.dim(`  reason: ${truncate(reason.trim(), 90)}`);
+  if (linked.length) logger.dim(`  auto-linked to: ${linked.join(", ")}`);
   logger.line("");
   logger.info(`Searchable now: continuity recall "${firstWord(title)}"`);
   logger.dim(`Entry ${entry.id} · see all with: continuity decisions`);

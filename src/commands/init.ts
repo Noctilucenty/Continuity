@@ -68,7 +68,7 @@ export async function init(opts: { force?: boolean; name?: string }): Promise<vo
   // Config + root doc.
   const config: ProjectConfig = {
     name,
-    version: "0.4.0",
+    version: "0.5.0",
     createdAt: now(),
     projectId: newProjectId(),
     schemaVersion: SCHEMA_VERSION,

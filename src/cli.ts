@@ -22,6 +22,8 @@ import { decisions } from "./commands/decisions";
 import { ask } from "./commands/ask";
 import { done } from "./commands/done";
 import { metrics } from "./commands/metrics";
+import { entityAdd, entityList } from "./commands/entity";
+import { link } from "./commands/link";
 
 /** Collect repeatable options (e.g. --changed a --changed b) into an array. */
 function collect(value: string, previous: string[]): string[] {
@@ -33,7 +35,7 @@ const program = new Command();
 program
   .name("continuity")
   .description("An AI project runtime. Never lose AI project context again.")
-  .version("0.4.0");
+  .version("0.5.0");
 
 program
   .command("init")
@@ -149,6 +151,26 @@ program
   .description("Show the knowledge graph")
   .option("--json", "Emit the raw graph as JSON")
   .action(graph);
+
+const entityCmd = program
+  .command("entity")
+  .description("Manage knowledge-graph entities");
+entityCmd
+  .command("add <name>")
+  .description("Register an entity the graph should track")
+  .option("--kind <kind>", "Entity kind", "concept")
+  .option("--alias <alias>", "An alias (repeatable)", collect, [])
+  .action((name, opts) => entityAdd(name, opts));
+entityCmd
+  .command("list")
+  .description("List registered entities and their link counts")
+  .action(entityList);
+
+program
+  .command("link")
+  .description("Auto-link decisions/memory to known entities (relates_to edges)")
+  .option("--apply", "Write the proposed connections (default is preview)")
+  .action(link);
 
 program
   .command("pack [topic]")

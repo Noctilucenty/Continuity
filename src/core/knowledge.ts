@@ -225,6 +225,31 @@ export async function ensureEntity(p: Paths, name: string, kind = "concept"): Pr
   return entity;
 }
 
+/** Ensure an entity exists and merge in any aliases. Used to seed the graph. */
+export async function registerEntity(
+  p: Paths,
+  name: string,
+  opts: { kind?: string; aliases?: string[] } = {}
+): Promise<Entity> {
+  const base = await ensureEntity(p, name, opts.kind ?? "concept");
+  if (!opts.aliases || opts.aliases.length === 0) return base;
+
+  const entities = await loadEntities(p);
+  const idx = entities.findIndex((e) => e.id === base.id);
+  if (idx === -1) return base;
+
+  const seen = new Set(entities[idx].aliases.map((a) => a.toLowerCase()));
+  const norm = entities[idx].name.toLowerCase();
+  for (const alias of opts.aliases) {
+    const a = alias.trim();
+    if (!a || a.toLowerCase() === norm || seen.has(a.toLowerCase())) continue;
+    seen.add(a.toLowerCase());
+    entities[idx].aliases.push(a);
+  }
+  await saveEntities(p, entities);
+  return entities[idx];
+}
+
 /* ---------- index rebuild / backfill ---------- */
 
 /**

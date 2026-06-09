@@ -158,6 +158,8 @@ continuity resume --raw | pbcopy      # the exact prompt to restart, copied
 | `continuity recall "<query>"` | Search memory and decisions (`--rebuild` to reindex) |
 | `continuity ask "<question>"` | Answer a question from stored memory (local, deterministic) |
 | `continuity graph` | Render the knowledge graph (`--json` for tooling) |
+| `continuity entity add <name>` | Register a graph entity to track (`--alias`, `--kind`) |
+| `continuity link` | Auto-link decisions/memory to known entities (`--apply`) |
 | `continuity pack <topic>` | Generate a focused context bundle for one area (`--save`) |
 | `continuity analyze` | Inspect the repository for local project intelligence (`--json`) |
 | `continuity metrics` | Show usage signal and task-completion velocity (`--json`) |
@@ -226,6 +228,9 @@ The daily pain this targets: not re-explaining your project to every AI.
 - **Self-improving metrics** — `done` completes tasks; `metrics` (and the
   Momentum line in `status`/`review`) track checkpoint/handoff/decision counts
   and completion velocity, all local. See [docs/metrics.md](docs/metrics.md).
+- **Entity auto-linking** — register entities, and the knowledge graph grows
+  itself: decisions and memory that mention them get `relates_to` edges
+  automatically. See [docs/entity-auto-linking.md](docs/entity-auto-linking.md).
 
 ## Roadmap
 
@@ -234,8 +239,7 @@ Built so the local-first core never breaks; every future piece is an additive se
 - **Now** — model-specific handoffs, context packs, repository intelligence,
   decision retrieval, local ask, git checkpoints, sync-ready data,
   self-improving metrics.
-- **Next** — entity auto-linking, embeddings-backed recall/ask (behind the same
-  local-first fallback).
+- **Next** — embeddings-backed recall/ask (behind the same local-first fallback).
 - **Then** — a model-adapter execution layer, an autonomous `continuity run`
   loop, multi-agent orchestration, plus the Sync and Team layers.
 
