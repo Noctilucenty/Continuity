@@ -115,17 +115,20 @@ $ continuity status
 
 Requires Node 20 or newer.
 
+The package is published under the scope `@noctilucenty/continuity`; the command
+it installs is `continuity`.
+
 Global install (use the `continuity` command anywhere):
 
 ```bash
-npm install -g continuity
+npm install -g @noctilucenty/continuity
 continuity
 ```
 
 One-time use, no install:
 
 ```bash
-npx continuity
+npx @noctilucenty/continuity
 ```
 
 From source (development):
@@ -138,9 +141,8 @@ npm run build
 npm link            # makes `continuity` available globally
 ```
 
-> Note: the npm package is being finalized for publish. Until then, use the
-> from-source install above. See [docs/installation.md](docs/installation.md) for
-> updating, uninstalling, and platform notes (including clipboard tools).
+See [docs/installation.md](docs/installation.md) for updating, uninstalling, and
+platform notes (including clipboard tools).
 
 ## Quick start
 

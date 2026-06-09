@@ -2,12 +2,15 @@
 
 Continuity is a command-line tool. It requires Node.js 20 or newer.
 
+The package is published as `@noctilucenty/continuity`. The command it installs
+is `continuity` (unscoped), so day-to-day usage is just `continuity`.
+
 ## Global install
 
 Installs the `continuity` command for use in any directory:
 
 ```bash
-npm install -g continuity
+npm install -g @noctilucenty/continuity
 continuity
 ```
 
@@ -23,8 +26,8 @@ continuity            # shows the home screen / getting-started
 Run it once without installing:
 
 ```bash
-npx continuity
-npx continuity init
+npx @noctilucenty/continuity
+npx @noctilucenty/continuity init
 ```
 
 npx downloads the package on demand and runs it. Good for trying it out.
@@ -55,9 +58,9 @@ node dist/cli.js status
 Global install:
 
 ```bash
-npm update -g continuity
+npm update -g @noctilucenty/continuity
 # or reinstall the latest
-npm install -g continuity@latest
+npm install -g @noctilucenty/continuity@latest
 ```
 
 From source:
@@ -71,8 +74,8 @@ npm run build
 ## Uninstalling
 
 ```bash
-npm uninstall -g continuity   # global install
-npm unlink -g continuity      # if you used npm link from source
+npm uninstall -g @noctilucenty/continuity   # global install
+npm unlink -g @noctilucenty/continuity       # if you used npm link from source
 ```
 
 Your project data lives in each project's `.continuity/` directory and is never

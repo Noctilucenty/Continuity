@@ -20,6 +20,17 @@ describe("package metadata", () => {
     expect(pkg.main).toMatch(/cli\.js$/);
   });
 
+  it("keeps the command unscoped even if the package name is scoped", () => {
+    // The command users type stays `continuity` regardless of the package scope.
+    expect(Object.keys(pkg.bin)).toContain("continuity");
+  });
+
+  it("publishes a scoped package publicly", () => {
+    if (pkg.name.startsWith("@")) {
+      expect(pkg.publishConfig?.access).toBe("public");
+    }
+  });
+
   it("requires Node 20+", () => {
     expect(pkg.engines.node).toContain("20");
   });

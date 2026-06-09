@@ -4,6 +4,24 @@ All notable changes to Continuity are documented here. Each version below has a
 matching tag and GitHub Release. Format follows Keep a Changelog; versions are
 pre-1.0 and additive (the local-first, files-as-truth core never breaks).
 
+## v0.9.0 — npm Publish Readiness
+
+Get the package ready to publish to npm under a reserved name.
+
+- Renamed the package to the scoped `@noctilucenty/continuity` (the bare name
+  `continuity` was already taken on npm). The installed command stays
+  `continuity` — only the package name is scoped.
+- Added `publishConfig: { access: "public" }` so the scoped package publishes
+  publicly.
+- Verified with `npm publish --dry-run`: 72 files, ~75 kB, dist + docs + README +
+  LICENSE only.
+- Updated install docs/README for the scoped name (`npm i -g
+  @noctilucenty/continuity`, `npx @noctilucenty/continuity`; command remains
+  `continuity`).
+
+Publishing itself is a manual step requiring npm auth:
+`npm login` then `npm publish`.
+
 ## v0.8.0 — Agent Lifecycle
 
 Make resume and checkpoint happen automatically inside AI coding agents.
