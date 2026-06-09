@@ -2,10 +2,10 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "site",
+      "name": "continuity-site",
       "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "4599", "--directory", "site"],
-      "port": 4599
+      "runtimeArgs": ["-m", "http.server", "4600", "--directory", "/Users/noctilucenteasteliq/Desktop/Continuity/site"],
+      "port": 4600
     }
   ]
 }
