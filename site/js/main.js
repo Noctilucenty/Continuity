@@ -140,6 +140,45 @@
     let rt; window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(resize, 200); });
   }
 
+  /* ── Mobile nav toggle ───────────────────────────── */
+  const navToggle = $('#navToggle');
+  if (navToggle) {
+    const close = () => { nav.classList.remove('open'); navToggle.setAttribute('aria-expanded', 'false'); };
+    navToggle.addEventListener('click', () => {
+      const open = nav.classList.toggle('open');
+      navToggle.setAttribute('aria-expanded', String(open));
+    });
+    $$('#navLinks a').forEach((a) => a.addEventListener('click', close));
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+  }
+
+  /* ── GitHub star count ───────────────────────────── */
+  const ghStars = $('#ghStars');
+  if (ghStars) {
+    fetch('https://api.github.com/repos/Noctilucenty/Continuity')
+      .then((r) => r.ok ? r.json() : null)
+      .then((d) => { if (d && typeof d.stargazers_count === 'number') ghStars.textContent = '★ ' + d.stargazers_count; })
+      .catch(() => {});
+  }
+
+  /* ── Copy terminal commands ──────────────────────── */
+  const termCopy = $('#termCopy'), termCode = $('#termCode');
+  if (termCopy && termCode) {
+    termCopy.addEventListener('click', async () => {
+      const text = termCode.innerText.replace(/^\$\s?/gm, '').trim();
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch {
+        const ta = document.createElement('textarea');
+        ta.value = text; document.body.appendChild(ta); ta.select();
+        document.execCommand('copy'); ta.remove();
+      }
+      termCopy.textContent = 'Copied!';
+      termCopy.classList.add('copied');
+      setTimeout(() => { termCopy.textContent = 'Copy'; termCopy.classList.remove('copied'); }, 1800);
+    });
+  }
+
   /* ── Smooth-scroll for in-page anchors ───────────── */
   $$('a[href^="#"]').forEach((a) => {
     a.addEventListener('click', (e) => {

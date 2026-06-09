@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://continuity.leondragon3798.workers.dev/sitemap.xml

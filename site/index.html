@@ -5,6 +5,30 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Continuity — The Persistent Intelligence Layer</title>
 <meta name="description" content="Continuity is the persistent memory and orchestration layer above AI systems. Never lose project context again — across Claude, GPT, Cursor, and Gemini." />
+<meta name="theme-color" content="#05060a" />
+<link rel="canonical" href="https://continuity.leondragon3798.workers.dev/" />
+
+<!-- Icons -->
+<link rel="icon" href="favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png" />
+<link rel="apple-touch-icon" href="apple-touch-icon.png" />
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Continuity" />
+<meta property="og:title" content="Continuity — The Persistent Intelligence Layer" />
+<meta property="og:description" content="The memory and orchestration layer above AI systems. AI is temporary — your projects are not." />
+<meta property="og:url" content="https://continuity.leondragon3798.workers.dev/" />
+<meta property="og:image" content="https://continuity.leondragon3798.workers.dev/og.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Continuity — The Persistent Intelligence Layer" />
+<meta name="twitter:description" content="The memory and orchestration layer above AI systems. AI is temporary — your projects are not." />
+<meta name="twitter:image" content="https://continuity.leondragon3798.workers.dev/og.png" />
+
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -29,14 +53,24 @@
     <svg class="mark mark-sm" viewBox="0 0 100 130" aria-hidden="true"><use href="#hourglass"/></svg>
     <span>Continuity</span>
   </a>
-  <nav class="nav-links">
+  <nav class="nav-links" id="navLinks">
     <a href="#problem">Problem</a>
     <a href="#solution">Solution</a>
     <a href="#engines">Engines</a>
     <a href="#graph">Architecture</a>
     <a href="#future">Future</a>
+    <a class="nav-links-cta" href="#cta">Get Started</a>
   </nav>
-  <a href="#cta" class="nav-cta">Get Started</a>
+  <div class="nav-right">
+    <a class="nav-gh" href="https://github.com/Noctilucenty/Continuity" target="_blank" rel="noopener" aria-label="Star Continuity on GitHub">
+      <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+      <span id="ghStars">Star</span>
+    </a>
+    <a href="#cta" class="nav-cta">Get Started</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
 </header>
 
 <!-- ░░ SVG defs: the logo mark ░░ -->
@@ -345,8 +379,10 @@
       <h2 class="headline reveal">The operating system<br><span class="grad">for knowledge work.</span></h2>
       <p class="hero-sub reveal">Build once. Pause anytime. Resume anywhere.</p>
       <div class="terminal reveal">
-        <div class="term-bar"><i></i><i></i><i></i><span>zsh — continuity</span></div>
-        <pre class="term-body"><code><span class="c-com">$</span> npm install &amp;&amp; npm run build &amp;&amp; npm link
+        <div class="term-bar"><i></i><i></i><i></i><span>zsh — continuity</span>
+          <button class="term-copy" id="termCopy" type="button" aria-label="Copy commands">Copy</button>
+        </div>
+        <pre class="term-body"><code id="termCode"><span class="c-com">$</span> npm install &amp;&amp; npm run build &amp;&amp; npm link
 <span class="c-com">$</span> cd your-project
 <span class="c-com">$</span> continuity <span class="c-kw">init</span>
 <span class="c-com">$</span> continuity <span class="c-kw">plan</span> <span class="c-str">"Ship the dashboard"</span>
