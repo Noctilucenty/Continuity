@@ -1,5 +1,6 @@
 import { requireProject } from "./_shared";
 import { filterDecisions, formatDecision } from "../knowledge/decisions";
+import { hints, printHint } from "../utils/hints";
 import { logger } from "../utils/logger";
 import { pluralize } from "../utils/format";
 
@@ -30,8 +31,11 @@ export async function decisions(opts: {
   logger.heading(`Decisions${filters.length ? ` (${filters.join(", ")})` : ""}`);
 
   if (found.length === 0) {
-    logger.info("No matching decisions.");
-    logger.dim('Record one with: continuity decide --title "..." --reason "..."');
+    if (filters.length) {
+      logger.info("No decisions match those filters.");
+    } else {
+      printHint(hints.noDecisions());
+    }
     return;
   }
 

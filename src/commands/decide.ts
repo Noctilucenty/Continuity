@@ -28,10 +28,11 @@ interface DecideOpts {
  * reading the file. Supports richer fields: context, related files, tags, and
  * superseding a prior decision.
  */
-export async function decide(opts: DecideOpts): Promise<void> {
+export async function decide(titleArg: string | undefined, opts: DecideOpts): Promise<void> {
   const p = await requireProject();
 
-  const title = opts.title ?? (await ask("Decision (what did you decide?)", ""));
+  const title =
+    opts.title ?? titleArg ?? (await ask("Decision (what did you decide?)", ""));
   if (!title || !title.trim()) {
     logger.warn("No decision text given — nothing recorded.");
     return;

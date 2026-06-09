@@ -8,7 +8,7 @@ absent.
 ## Shipped
 
 ### v1 — the runtime
-The full loop: `init → plan → next → checkpoint → review → handoff → resume`.
+The full loop: `init -> plan -> next -> checkpoint -> review -> handoff -> resume`.
 Heuristic planner and reviewer, scored task graph, per-agent handoffs, all on
 local files with zero LLM dependency.
 
@@ -36,8 +36,8 @@ A typed, queryable knowledge store beside the markdown:
   implementations for Claude / GPT / Gemini. This is *the* seam: the heuristic
   planner/reviewer/summarizer each gain an optional model-backed path, chosen at
   runtime, falling back to heuristics when no key is present.
-- **Autonomous mode (`continuity run`)** — loop: pick next task → execute via the
-  active adapter → checkpoint → review → generate next → repeat until blocked. The
+- **Autonomous mode (`continuity run`)** — loop: pick next task -> execute via the
+  active adapter -> checkpoint -> review -> generate next -> repeat until blocked. The
   human becomes supervisor.
 - **Multi-agent orchestration** — Planner / Builder / Reviewer / Research / Memory
   roles operating independently but sharing one Continuity memory.

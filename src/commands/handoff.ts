@@ -6,6 +6,7 @@ import { bump } from "../store/metrics";
 import { AGENT_TARGETS } from "../types";
 import { logger } from "../utils/logger";
 import { relativePath } from "../utils/format";
+import { copyOrPrint } from "../utils/clipboard";
 
 /**
  * Write a paste-ready briefing for a specific agent. The target is normalized
@@ -14,7 +15,7 @@ import { relativePath } from "../utils/format";
  */
 export async function handoff(
   to: string | undefined,
-  opts: { print?: boolean }
+  opts: { print?: boolean; copy?: boolean }
 ): Promise<void> {
   const p = await requireProject();
 
@@ -31,6 +32,12 @@ export async function handoff(
 
   if (opts.print) {
     logger.line(doc);
+    return;
+  }
+
+  if (opts.copy) {
+    await copyOrPrint(doc, `${target} handoff`);
+    logger.dim(`Saved to ${relativePath(p.handoffs[target])} · paste it into ${target}.`);
     return;
   }
 

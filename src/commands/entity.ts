@@ -1,6 +1,7 @@
 import pc from "picocolors";
 import { requireProject, UserError } from "./_shared";
 import { registerEntity, loadEntities, loadRelations } from "../core/knowledge";
+import { hints, printHint } from "../utils/hints";
 import { logger } from "../utils/logger";
 import { pluralize } from "../utils/format";
 
@@ -31,8 +32,7 @@ export async function entityList(): Promise<void> {
   const [entities, relations] = await Promise.all([loadEntities(p), loadRelations(p)]);
 
   if (entities.length === 0) {
-    logger.info("No entities yet.");
-    logger.dim('  Add one with: continuity entity add "Polymarket"');
+    printHint(hints.noEntities());
     return;
   }
 

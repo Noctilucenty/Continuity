@@ -5,6 +5,7 @@ import { loadQueue, loadCompleted, nextActionable, sortedByPriority } from "../c
 import { readLatestCheckpoint, checkpointAge } from "../core/checkpoints";
 import { loadEntries } from "../core/knowledge";
 import { loadMetrics, velocity } from "../store/metrics";
+import { hints, printHint } from "../utils/hints";
 import { logger } from "../utils/logger";
 import { pluralize, truncate } from "../utils/format";
 
@@ -45,12 +46,23 @@ export async function status(): Promise<void> {
   );
 
   const next = nextActionable(queue);
+  if (!next && open.length === 0) {
+    logger.line("");
+    printHint(hints.noTasks());
+    if (cp === null) {
+      logger.line("");
+      printHint(hints.noCheckpoints());
+    }
+    logger.line("");
+    return;
+  }
+
   logger.heading("Next best task");
   if (next) {
-    logger.line(`  ${pc.green("→")} ${next.title}`);
+    logger.line(`  ${pc.green("->")} ${next.title}`);
     logger.dim(`    ${next.source} · priority ${next.priority} · ${next.status}`);
   } else {
-    logger.dim('  Nothing queued. Run `continuity plan "<goal>"`.');
+    logger.dim('  Nothing actionable. Run `continuity plan "<goal>"`.');
   }
 
   const top = sortedByPriority(open).slice(0, 5);

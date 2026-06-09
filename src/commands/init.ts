@@ -10,6 +10,23 @@ import { now, relativePath } from "../utils/format";
 import { newProjectId, SCHEMA_VERSION } from "../store/metadata";
 import { defaultMetrics } from "../store/metrics";
 
+/** The concise post-init next-step guide. Exported so it can be asserted. */
+export function onboardingGuide(): string[] {
+  return [
+    "Next steps:",
+    "  1. Add your project goal:",
+    '       continuity plan "build a local-first AI memory runtime"',
+    "  2. Start your first task:",
+    "       continuity next",
+    "  3. Save your first checkpoint:",
+    "       continuity checkpoint --from-git",
+    "  4. When switching AI:",
+    "       continuity handoff --to claude --copy",
+    "",
+    "Tip: run `continuity` anytime to see your next best action.",
+  ];
+}
+
 /**
  * Scaffold a complete `.continuity/` workspace. Idempotent-ish: refuses to
  * clobber an existing project unless --force is passed.
@@ -20,6 +37,8 @@ export async function init(opts: { force?: boolean; name?: string }): Promise<vo
   if ((await isInitialized(p)) && !opts.force) {
     logger.warn("This project is already initialized.");
     logger.dim("Use `continuity status` to see it, or `--force` to re-scaffold.");
+    logger.line("");
+    for (const line of onboardingGuide()) logger.line(line);
     return;
   }
 
@@ -68,7 +87,7 @@ export async function init(opts: { force?: boolean; name?: string }): Promise<vo
   // Config + root doc.
   const config: ProjectConfig = {
     name,
-    version: "0.5.0",
+    version: "0.6.0",
     createdAt: now(),
     projectId: newProjectId(),
     schemaVersion: SCHEMA_VERSION,
@@ -86,5 +105,5 @@ export async function init(opts: { force?: boolean; name?: string }): Promise<vo
   logger.artifact("file", relativePath(p.config));
   logger.artifact("file", relativePath(p.rootDoc));
   logger.line("");
-  logger.info("Next: `continuity plan \"<your goal>\"` to generate your first tasks.");
+  for (const line of onboardingGuide()) logger.line(line);
 }

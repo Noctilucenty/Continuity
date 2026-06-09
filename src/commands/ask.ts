@@ -1,15 +1,20 @@
 import pc from "picocolors";
 import { requireProject, UserError } from "./_shared";
-import { askQuestion } from "../search/ask";
+import { askQuestion, AskResult } from "../search/ask";
 import { bump } from "../store/metrics";
+import { copyOrPrint } from "../utils/clipboard";
+import { hints, printHint } from "../utils/hints";
 import { logger } from "../utils/logger";
 
 /**
  * `continuity ask "<question>"` — deterministic, local Q&A over stored project
  * memory. Cites which sources it used and reports a confidence level. It never
- * pretends to know more than what's stored.
+ * pretends to know more than what's stored. With --copy, copies a clean answer.
  */
-export async function ask(question: string | undefined): Promise<void> {
+export async function ask(
+  question: string | undefined,
+  opts: { copy?: boolean } = {}
+): Promise<void> {
   const p = await requireProject();
 
   if (!question || !question.trim()) {
@@ -22,13 +27,12 @@ export async function ask(question: string | undefined): Promise<void> {
   logger.heading(`Q: ${result.question}`);
 
   if (!result.found) {
-    logger.warn("No stored memory matches that question.");
-    logger.dim("Continuity only answers from what you've recorded — it won't guess.");
-    logger.line("");
-    logger.info("Try recording context first:");
-    logger.dim('  continuity decide --title "..." --reason "..."');
-    logger.dim("  continuity checkpoint");
-    logger.dim("  continuity recall \"<keywords>\"   (broader keyword search)");
+    printHint(hints.askNoResult());
+    return;
+  }
+
+  if (opts.copy) {
+    await copyOrPrint(plainAnswer(result), "answer");
     return;
   }
 
@@ -56,4 +60,22 @@ export async function ask(question: string | undefined): Promise<void> {
     logger.dim("  (based on keyword match quality — record more context to improve answers)");
   }
   logger.line("");
+}
+
+/** A clean, plain-text answer (no color) suitable for the clipboard. */
+function plainAnswer(result: AskResult): string {
+  const lines = [`Q: ${result.question}`, ""];
+  if (result.bestDecision) {
+    const d = result.bestDecision;
+    lines.push(`Decision: ${d.title}`);
+    if (d.reason) lines.push(`Reason: ${d.reason}`);
+    if (d.context) lines.push(`Context: ${d.context}`);
+    if (d.alternatives?.length) lines.push(`Alternatives: ${d.alternatives.join("; ")}`);
+    if (d.tradeoffs) lines.push(`Tradeoffs: ${d.tradeoffs}`);
+    lines.push("");
+  }
+  lines.push("Sources used:");
+  for (const s of result.sources) lines.push(`  - [${s.type}] ${s.label}`);
+  lines.push("", `Confidence: ${result.confidence}`);
+  return lines.join("\n");
 }

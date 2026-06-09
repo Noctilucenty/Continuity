@@ -1,6 +1,7 @@
 import { requireProject, UserError } from "./_shared";
 import { buildPack, renderPack } from "../context/contextPack";
 import { bump } from "../store/metrics";
+import { copyOrPrint } from "../utils/clipboard";
 import { writeText } from "../utils/fs";
 import { logger } from "../utils/logger";
 import { relativePath } from "../utils/format";
@@ -13,7 +14,7 @@ import path from "path";
  */
 export async function pack(
   topic: string | undefined,
-  opts: { save?: boolean }
+  opts: { save?: boolean; copy?: boolean }
 ): Promise<void> {
   const p = await requireProject();
 
@@ -25,7 +26,11 @@ export async function pack(
   const doc = renderPack(built);
   await bump(p, "packs");
 
-  logger.line(doc);
+  if (opts.copy) {
+    await copyOrPrint(doc, `"${built.topic}" context pack`);
+  } else {
+    logger.line(doc);
+  }
 
   if (!built.matched) {
     logger.warn(`No topic-specific entries matched "${built.topic}" — showed general context.`);

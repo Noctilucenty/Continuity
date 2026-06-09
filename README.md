@@ -129,16 +129,33 @@ Prefer not to link? Run any command with `node dist/cli.js <command>`.
 cd your-project
 continuity init                       # start building with Continuity
 continuity plan "Build the trader dashboard with live odds"
-continuity next                       # start the highest-leverage task
+```
 
-# ...do the work with your AI...
+Then just type `continuity` any time — it shows a short dashboard and your single
+next action (no command wall, exits cleanly). For the grouped command list, run
+`continuity --help`.
 
-continuity checkpoint --summary "Wired the odds feed" \
-  --changed "Added poller" --failed "WS reconnect drops" \
-  --decision "Poll every 5s instead of WebSocket for v1"
+### The daily 5-command loop
 
-continuity handoff --to gpt           # paste-ready briefing for the next agent
-continuity resume --raw | pbcopy      # the exact prompt to restart, copied
+```bash
+continuity next                       # 1. what should I do right now?
+# 2. do the work with your AI
+continuity done                       # 3. finished that task
+continuity checkpoint --from-git      # 4. save state from your git changes
+continuity handoff --to claude --copy # 5. brief the next AI (on your clipboard)
+```
+
+That's the whole rhythm. See [docs/user-friendly-cli.md](docs/user-friendly-cli.md).
+
+### Copy-paste handoffs
+
+The core pain Continuity removes is re-explaining your project to another AI.
+`--copy` makes it one step — run, then paste:
+
+```bash
+continuity handoff --to gpt --copy    # briefing -> clipboard
+continuity resume --copy              # restart prompt -> clipboard
+continuity pack memory --copy         # focused context bundle -> clipboard
 ```
 
 ## Commands
@@ -231,6 +248,9 @@ The daily pain this targets: not re-explaining your project to every AI.
 - **Entity auto-linking** — register entities, and the knowledge graph grows
   itself: decisions and memory that mention them get `relates_to` edges
   automatically. See [docs/entity-auto-linking.md](docs/entity-auto-linking.md).
+- **User-friendly CLI** — bare `continuity` is a dashboard with your next action,
+  `--copy` puts handoffs/resume/packs on your clipboard, help is grouped, and
+  empty states guide you. See [docs/user-friendly-cli.md](docs/user-friendly-cli.md).
 
 ## Roadmap
 

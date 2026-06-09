@@ -4,13 +4,13 @@ import { loadQueue, nextActionable } from "../core/tasks";
 import { readLatestCheckpoint } from "../core/checkpoints";
 import { logger } from "../utils/logger";
 import { truncate } from "../utils/format";
+import { copyOrPrint } from "../utils/clipboard";
 
 /**
  * Print the single best prompt to restart work right now. With --raw, print only
- * the prompt (no chrome) so it pipes cleanly into another tool:
- *   continuity resume --raw | pbcopy
+ * the prompt (pipe-friendly); with --copy, put it on the clipboard.
  */
-export async function resume(opts: { raw?: boolean }): Promise<void> {
+export async function resume(opts: { raw?: boolean; copy?: boolean }): Promise<void> {
   const p = await requireProject();
   const [config, memory, queue, cp] = await Promise.all([
     loadConfig(p),
@@ -41,12 +41,17 @@ export async function resume(opts: { raw?: boolean }): Promise<void> {
     return;
   }
 
+  if (opts.copy) {
+    await copyOrPrint(prompt, "resume prompt");
+    return;
+  }
+
   logger.heading(`Resume · ${name}`);
   logger.line("```");
   logger.line(prompt);
   logger.line("```");
   logger.line("");
-  logger.dim("Tip: `continuity resume --raw | pbcopy` to copy the prompt directly.");
+  logger.dim("Tip: `continuity resume --copy` copies the prompt to your clipboard.");
 }
 
 function firstLine(md: string | undefined): string {

@@ -7,6 +7,7 @@ import {
   nextActionable,
   updateStatus,
 } from "../core/tasks";
+import { hints, printHint } from "../utils/hints";
 import { logger } from "../utils/logger";
 
 /**
@@ -21,7 +22,7 @@ export async function next(opts: { peek?: boolean }): Promise<void> {
   const task = nextActionable(queue);
 
   if (!task) {
-    logger.info("No actionable task. Run `continuity plan \"<goal>\"` to generate one.");
+    printHint(hints.noTasks());
     return;
   }
 
