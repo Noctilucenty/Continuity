@@ -87,7 +87,10 @@ em{font-style:normal;color:#fff}
 /* ── Hero ─────────────────────────────────────────── */
 .hero{position:relative;z-index:2;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
   text-align:center;padding:120px 20px 80px}
-.eyebrow{font-size:13px;letter-spacing:.32em;color:var(--violet);font-weight:600;margin:26px 0 14px}
+.wordmark{margin-top:14px;font-size:clamp(20px,3.4vw,34px);font-weight:600;letter-spacing:.62em;text-indent:.62em;
+  background:linear-gradient(110deg,#a78bfa 0%,#818cf8 35%,#22d3ee 68%,#f472b6 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.eyebrow{font-size:13px;letter-spacing:.32em;color:var(--violet);font-weight:600;margin:22px 0 14px}
 .hero-title{font-size:clamp(44px,8.5vw,108px);font-weight:800;line-height:.98;letter-spacing:-.04em}
 .hero-title .line{display:block;opacity:0;transform:translateY(40px);filter:blur(8px);
   animation:rise .9s var(--ease) forwards;animation-delay:var(--d)}
