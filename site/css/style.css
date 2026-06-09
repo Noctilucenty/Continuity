@@ -215,15 +215,24 @@ em{font-style:normal;color:#fff}
 
 /* ── Engines ──────────────────────────────────────── */
 .engines{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
-.engine{padding:34px 30px;border-radius:24px;border:1px solid var(--card-bd);background:var(--card);transition:.5s var(--ease)}
+.engine{padding:34px 30px;border-radius:24px;border:1px solid var(--card-bd);background:var(--card);
+  transition:.5s var(--ease);position:relative;overflow:hidden}
+.engine::before{content:"";position:absolute;inset:0;opacity:0;transition:opacity .5s var(--ease);
+  background:radial-gradient(120% 90% at 20% 0%,rgba(139,92,246,.16),transparent 60%);pointer-events:none}
 .engine:hover{transform:translateY(-6px);border-color:rgba(255,255,255,.2);box-shadow:0 26px 60px rgba(0,0,0,.45)}
-.engine h3{font-size:22px;font-weight:700;margin-bottom:18px;display:flex;align-items:center;gap:12px;letter-spacing:-.02em}
-.engine h3 i{font-style:normal;width:42px;height:42px;display:grid;place-items:center;border-radius:12px;font-size:20px;
-  background:linear-gradient(135deg,rgba(139,92,246,.25),rgba(34,211,238,.2));color:#c4b5fd}
-.engine ul{list-style:none;display:flex;flex-direction:column;gap:12px}
-.engine li{color:var(--muted);font-size:15px;padding-left:18px;position:relative}
-.engine li::before{content:"→";position:absolute;left:0;color:var(--cyan)}
-.engine li b{color:#fff;font-weight:600}
+.engine:hover::before{opacity:1}
+.engine-icon{width:58px;height:58px;display:grid;place-items:center;border-radius:16px;margin-bottom:20px;color:#c4b5fd;
+  background:linear-gradient(135deg,rgba(139,92,246,.3),rgba(34,211,238,.2));border:1px solid rgba(255,255,255,.08);
+  animation:floaty 6s ease-in-out infinite;transition:transform .45s var(--ease),color .45s,box-shadow .45s}
+.engine-icon svg{width:28px;height:28px}
+.engine:nth-child(2) .engine-icon{animation-delay:-1.2s}
+.engine:nth-child(3) .engine-icon{animation-delay:-2.4s}
+.engine:nth-child(4) .engine-icon{animation-delay:-3.6s}
+.engine:nth-child(5) .engine-icon{animation-delay:-4.2s}
+.engine:nth-child(6) .engine-icon{animation-delay:-5s}
+.engine:hover .engine-icon{transform:scale(1.1) rotate(-5deg);color:#fff;box-shadow:0 0 30px rgba(139,92,246,.55)}
+.engine h3{font-size:21px;font-weight:700;margin-bottom:8px;letter-spacing:-.02em}
+.engine p{color:var(--muted);font-size:15.5px;line-height:1.5}
 
 /* ── Knowledge graph ──────────────────────────────── */
 .graph-wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:50px;align-items:center}
@@ -249,7 +258,8 @@ em{font-style:normal;color:#fff}
 .future-grid{display:grid;grid-template-columns:1fr 1fr;gap:30px}
 @media(max-width:980px){.future-grid{grid-template-columns:1fr}}
 .loop,.compress{padding:40px 34px;border-radius:26px;border:1px solid var(--card-bd);background:var(--card)}
-.loop h3,.compress h3{font-size:24px;font-weight:700;margin-bottom:26px;letter-spacing:-.02em}
+.compress{display:flex;flex-direction:column;justify-content:center}
+.loop h3,.compress h3{font-size:24px;font-weight:700;margin-bottom:18px;letter-spacing:-.02em}
 .loop-ring{position:relative;height:300px;display:grid;place-items:center}
 .loop-core{width:84px;height:84px;border-radius:50%;display:grid;place-items:center;font-size:34px;color:#05060a;font-weight:800;
   background:var(--grad);box-shadow:0 0 50px rgba(139,92,246,.6);animation:spin 12s linear infinite}
@@ -264,7 +274,7 @@ em{font-style:normal;color:#fff}
 .loop-steps .ls:nth-child(4){transform:translate(-50%,-50%) translateX(-135px)}  /* left  */
 @keyframes lspulse{0%,100%{border-color:var(--card-bd);color:var(--muted)}25%{border-color:var(--violet);color:#fff;box-shadow:0 0 24px rgba(139,92,246,.5)}}
 .loop-note{color:var(--muted);text-align:center;margin-top:14px;font-size:14px}
-.stat-row{display:flex;align-items:baseline;gap:16px;padding:18px 0;border-bottom:1px solid var(--line)}
+.stat-row{display:flex;align-items:baseline;gap:16px;padding:24px 0;border-bottom:1px solid var(--line)}
 .stat-row:last-child{border-bottom:none}
 .stat-row .num{font-size:40px;font-weight:800;min-width:160px;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1}
 .stat-row p{color:var(--muted)}
