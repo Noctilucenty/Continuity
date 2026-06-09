@@ -4,6 +4,15 @@ All notable changes to Continuity are documented here. Each version below has a
 matching tag and GitHub Release. Format follows Keep a Changelog; versions are
 pre-1.0 and additive (the local-first, files-as-truth core never breaks).
 
+## v0.9.1 — First published release
+
+First version live on npm as `@noctilucenty/continuity`.
+
+- Fixed the `bin` path to the canonical `dist/cli.js` (the `./dist/cli.js` form
+  tripped npm's manifest normalization on publish). Guarantees the global
+  `continuity` command links correctly from the published package.
+- Published publicly to the npm registry.
+
 ## v0.9.0 — npm Publish Readiness
 
 Get the package ready to publish to npm under a reserved name.
