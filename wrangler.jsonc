@@ -1,0 +1,9 @@
+{
+  // Serves the static marketing site (site/) as a Cloudflare Worker with Static Assets.
+  // No build step is required — these are plain HTML/CSS/JS files.
+  "name": "continuity",
+  "compatibility_date": "2024-11-01",
+  "assets": {
+    "directory": "./site"
+  }
+}
