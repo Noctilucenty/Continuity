@@ -230,6 +230,30 @@ em{font-style:normal;color:#fff}
 .flow-good::after{content:"";position:absolute;inset:0;border-radius:24px;padding:1px;background:var(--grad);
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:.6;pointer-events:none}
 
+/* ── Memory vs Continuity ─────────────────────────── */
+.vs{display:flex;align-items:stretch;justify-content:center;gap:22px;flex-wrap:wrap}
+.vs-card{flex:1 1 0;min-width:260px;max-width:420px;padding:40px 34px;border-radius:24px;
+  border:1px solid var(--card-bd);background:var(--card);text-align:center;transition:.5s var(--ease);position:relative;overflow:hidden}
+.vs-tag{display:inline-block;font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;color:var(--muted);margin-bottom:16px}
+.vs-card h3{font-size:clamp(26px,3.4vw,38px);font-weight:800;letter-spacing:-.03em;line-height:1.05;margin-bottom:10px}
+.vs-card p{color:var(--muted);font-size:16px}
+.vs-card--accent{border-color:transparent}
+.vs-card--accent .vs-tag{color:#c4b5fd}
+.vs-card--accent h3{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.vs-card--accent::after{content:"";position:absolute;inset:0;border-radius:24px;padding:1px;background:var(--grad);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.vs-card--accent{box-shadow:0 0 50px rgba(139,92,246,.18)}
+.vs-card:hover{transform:translateY(-5px)}
+.vs-arrow{flex:none;align-self:center;width:48px;height:48px;display:grid;place-items:center;color:var(--violet)}
+.vs-arrow svg{width:38px;height:24px;animation:vsArrow 1.8s ease-in-out infinite}
+@keyframes vsArrow{0%,100%{transform:translateX(0);opacity:.6}50%{transform:translateX(5px);opacity:1}}
+.vs-foot{text-align:center;color:var(--muted);margin:42px 0 18px;font-size:16px}
+.vs-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+.vs-chips span{font-size:14px;font-weight:500;color:#d7dbe8;padding:9px 16px;border-radius:999px;
+  border:1px solid var(--card-bd);background:rgba(255,255,255,.04);transition:.3s var(--ease)}
+.vs-chips span:hover{border-color:rgba(255,255,255,.25);color:#fff;transform:translateY(-2px)}
+@media(max-width:680px){.vs-arrow{transform:rotate(90deg)}}
+
 /* ── Pillars ──────────────────────────────────────── */
 .pillars{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px}
 .pillar{padding:40px 32px;border-radius:24px;border:1px solid var(--card-bd);background:var(--card);transition:.5s var(--ease)}
