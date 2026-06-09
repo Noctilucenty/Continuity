@@ -152,9 +152,11 @@ continuity init                       # start building with Continuity
 continuity plan "Build the trader dashboard with live odds"
 ```
 
-Then just type `continuity` any time — it shows a short dashboard and your single
-next action (no command wall, exits cleanly). For the grouped command list, run
-`continuity --help`.
+Then just type `continuity` any time. In a real terminal it opens the local
+interactive dashboard: project state, tasks, recent checkpoints, and buttons for
+Next, Checkpoint, Handoff, Resume, Ask, and Pack. In pipes, scripts, and CI it
+falls back to the short plain dashboard and exits cleanly. For the grouped
+command list, run `continuity --help`.
 
 ### The daily 5-command loop
 
@@ -198,6 +200,7 @@ continuity pack memory --copy         # focused context bundle -> clipboard
 | Command | What it does |
 |---------|--------------|
 | `continuity init` | Scaffold `.continuity/` in the current directory |
+| `continuity ui` | Open the interactive terminal dashboard |
 | `continuity status` | Dashboard: tasks, knowledge, last checkpoint |
 | `continuity plan [goal]` | Turn your goal + memory into a scored task list |
 | `continuity next` | Start the single highest-leverage task |

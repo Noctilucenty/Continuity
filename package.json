@@ -1,6 +1,6 @@
 {
   "name": "@noctilucenty/continuity",
-  "version": "0.9.1",
+  "version": "0.10.0",
   "description": "An AI project runtime that keeps work moving across Claude, GPT, Cursor, Gemini, and future agents. Never lose AI project context again.",
   "publishConfig": {
     "access": "public"

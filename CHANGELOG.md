@@ -4,6 +4,20 @@ All notable changes to Continuity are documented here. Each version below has a
 matching tag and GitHub Release. Format follows Keep a Changelog; versions are
 pre-1.0 and additive (the local-first, files-as-truth core never breaks).
 
+## v0.10.0 — Interactive Terminal UI
+
+Make Continuity usable without memorizing commands while keeping the CLI as the
+source of truth.
+
+- Bare `continuity` now opens a local full-screen terminal dashboard when run in
+  an interactive TTY; pipes, scripts, and CI keep the plain home output.
+- Added `continuity ui` as an explicit interactive dashboard entrypoint.
+- Dashboard shows project state, completed/open tasks, next action, recent
+  checkpoints, and action buttons for Next, Checkpoint, Handoff, Resume, Ask, and
+  Pack.
+- Actions delegate back to existing CLI commands and local services. No cloud,
+  no accounts, no OpenAI/Anthropic APIs, and no SDK dependency.
+
 ## v0.9.1 — First published release
 
 First version live on npm as `@noctilucenty/continuity`.

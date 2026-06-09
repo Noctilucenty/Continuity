@@ -27,6 +27,7 @@ import { link } from "./commands/link";
 import { home } from "./commands/home";
 import { mcp } from "./commands/mcp";
 import { agentInstall, agentStatus, agentUninstall } from "./commands/agent";
+import { runTerminalUi, shouldLaunchTerminalUi } from "./ui/terminal";
 
 /** Collect repeatable options (e.g. --changed a --changed b) into an array. */
 function collect(value: string, previous: string[]): string[] {
@@ -38,7 +39,7 @@ const program = new Command();
 program
   .name("continuity")
   .description("An AI project runtime. Never lose AI project context again.")
-  .version("0.9.1");
+  .version("0.10.0");
 
 // Grouped, scannable help: hide the flat auto-list and print our own groups so
 // the everyday commands are visibly prioritized.
@@ -47,6 +48,7 @@ const GROUPED_HELP = [
   "",
   "  Everyday:",
   "    init          Scaffold a Continuity project here",
+  "    ui            Open the interactive terminal dashboard",
   "    status        Show the project dashboard",
   "    plan          Generate tasks from your goal and memory",
   "    next          Start the highest-leverage task",
@@ -97,6 +99,11 @@ program
   .command("home")
   .description("Show the dashboard and your next best action (same as bare `continuity`)")
   .action(home);
+
+program
+  .command("ui")
+  .description("Open the interactive terminal dashboard")
+  .action(() => runTerminalUi());
 
 program
   .command("status")
@@ -267,14 +274,18 @@ program
   .action(analyze);
 
 async function main() {
-  // Bare `continuity` (no args/flags) shows the friendly home screen and exits
-  // successfully — never the command wall, never an error.
-  if (process.argv.slice(2).length === 0) {
-    await home();
-    return;
-  }
-
   try {
+    // Bare `continuity` opens the interactive dashboard in a real terminal.
+    // Non-TTY output keeps the plain home screen for scripts, tests, and pipes.
+    if (shouldLaunchTerminalUi()) {
+      await runTerminalUi();
+      return;
+    }
+    if (process.argv.slice(2).length === 0) {
+      await home();
+      return;
+    }
+
     await program.parseAsync(process.argv);
   } catch (err) {
     if (err instanceof UserError) {
